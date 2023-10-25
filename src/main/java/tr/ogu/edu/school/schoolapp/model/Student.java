@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,27 +19,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Student {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 32, name = "name", nullable = false)
+	@Column(name = "name", length = 32, nullable = false)
 	private String name;
 
-	@Column(length = 32, name = "surname", nullable = false)
+	@Column(name = "surname", length = 32, nullable = false)
 	private String surname;
 
-	@Column(nullable = false)
+	@Column(name = "grade", nullable = false)
 	private Integer grade;
 
-	@ManyToMany(mappedBy = "students")
+	@ManyToMany
+	@JoinTable(name = "student_relationship", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users;
 
 	@ManyToMany
-	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+	@JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
 	private Set<Term> terms;
 
-	@OneToMany
-	@JoinColumn(name = "student_id")
-	private Set<Installment> installments;
+	public Student(String name, String surname, Integer grade, Set<User> users, Set<Term> terms) {
+		this.name = name;
+		this.surname = surname;
+		this.grade = grade;
+		this.users = users;
+		this.terms = terms;
+	}
 }

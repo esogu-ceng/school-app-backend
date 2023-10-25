@@ -40,4 +40,13 @@ public class Installment {
 	@ManyToOne
 	@JoinColumn(name = "payment_id", insertable = false, updatable = false)
 	private Payment payment;
+
+	public Installment(Double amount, Date dueDate, Term term, Student student, Payment payment) {
+		this.amount = amount;
+		this.dueDate = dueDate;
+		this.term = term;
+		this.student = student;
+		this.payment = payment;
+	}
+
 }

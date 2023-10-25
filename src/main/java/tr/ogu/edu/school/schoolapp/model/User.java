@@ -23,20 +23,28 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(length = 32, name = "name", nullable = false)
+
+	@Column(name = "name", nullable = false, length = 32)
 	private String name;
 
-	@Column(length = 32, name = "surname", nullable = false)
+	@Column(name = "surname", nullable = false, length = 32)
 	private String surname;
 
-	@Column(name = "mail", unique = true)
+	@Column(name = "mail", unique = true, nullable = false, length = 30)
 	private String mail;
 
-	@Column(nullable = false)
+	@Column(name = "password", nullable = false, length = 15)
 	private String password;
-
 	@ManyToMany
-	@JoinTable(name = "user_student", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+	@JoinTable(name = "student_relationship", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
+
+	public User(String name, String surname, String mail, String password, Set<Student> students) {
+		this.name = name;
+		this.surname = surname;
+		this.mail = mail;
+		this.password = password;
+		this.students = students;
+	}
 
 }

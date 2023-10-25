@@ -9,8 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,10 +33,14 @@ public class Term {
 	@Column(name = "end_date", nullable = false)
 	private Date endDate;
 
-	@ManyToMany(mappedBy = "terms")
+	@ManyToMany
+	@JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
 
-	@OneToMany
-	@JoinColumn(name = "term_id")
-	private Set<Installment> installments;
+	public Term(String termName, Date startDate, Date endDate, Set<Student> students) {
+		this.termName = termName;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.students = students;
+	}
 }
