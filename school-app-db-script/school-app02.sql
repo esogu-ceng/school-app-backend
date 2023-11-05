@@ -1,0 +1,1 @@
+ALTER TABLE student_relationships RENAME TO student_user;
