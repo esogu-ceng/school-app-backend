@@ -8,12 +8,13 @@ public class SettingMapper {
 	}
 
 	public static SettingDto toSettingDto(Setting setting) {
-		SettingDto settingDto = new SettingDto();
-		return settingDto;
+		return new SettingDto(setting.getKey(), setting.getValue());
 	}
 
 	public static Setting fromSettingDto(SettingDto settingDto) {
 		Setting setting = new Setting();
+		setting.setKey(settingDto.getKey());
+		setting.setValue(settingDto.getValue());
 		return setting;
 	}
 }
