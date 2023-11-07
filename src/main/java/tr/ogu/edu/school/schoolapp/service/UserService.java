@@ -28,12 +28,11 @@ public class UserService {
 
 	public String saveUser(User user) {
 		String username = user.getName();
-		String password = user.getPassword();
-		String plainPassword = password; // Kullanıcının girdiği şifre
+		String plainPassword = user.getPassword();// Kullanıcının girdiği şifre
 		String name = user.getName();
 		String surname = user.getSurname();
 
-		if (username == null || username.isEmpty() || password == null || password.isEmpty() || name == null
+		if (username == null || username.isEmpty() || plainPassword == null || plainPassword.isEmpty() || name == null
 				|| name.isEmpty() || surname == null || surname.isEmpty()) {
 			return "Missing or incorrect user information. Please fill in all fields";
 		}
