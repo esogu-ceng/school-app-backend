@@ -15,12 +15,18 @@ import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Student;
 import tr.ogu.edu.school.schoolapp.service.StudentService;
 
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/students")
-public class StudentController {
 
+public class StudentController {
 	private final StudentService studentService;
+	
+	@GetMapping
+	public List<Student> getByUserId(Long userId) {
+		return studentService.getByUserId(userId);
+	}
 
 	@GetMapping
 	public List<Student> getAllStudents() {

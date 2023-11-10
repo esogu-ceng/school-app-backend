@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 
 @Service
@@ -14,6 +15,10 @@ import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
+
+	public List<Student> getByUserId(Long userId) {
+		return studentRepository.getByUserId(userId);
+	}
 
 	public List<Student> getAllStudents() {
 		return studentRepository.findAll();
