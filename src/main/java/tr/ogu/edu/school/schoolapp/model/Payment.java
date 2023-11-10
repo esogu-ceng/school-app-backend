@@ -27,6 +27,9 @@ public class Payment {
 	@Column(name = "payment_date", nullable = false)
 	private Date paymentDate;
 
+	@Column(name ="isPaymentCompleted", nullable = false, updatable = true )
+	private boolean isPaymentCompleted;
+	
 	public Payment(Double amount, Date paymentDate) {
 		this.amount = amount;
 		this.paymentDate = paymentDate;

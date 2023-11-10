@@ -44,4 +44,15 @@ public class PaymentController {
 		paymentService.deletePayment(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+    @GetMapping("/{id}/checkStatus")
+    public ResponseEntity<String> checkPaymentStatus(@PathVariable Long id) {
+        boolean paymentCompleted = paymentService.isPaymentCompleted(id);
+
+        if (paymentCompleted) {
+            return ResponseEntity.ok("Payment is completed for payment ID: " + id);
+        } else {
+            return ResponseEntity.ok("Payment is not completed for payment ID: " + id);
+        }
+    }
 }

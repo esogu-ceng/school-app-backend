@@ -30,4 +30,8 @@ public class PaymentService {
 	public void deletePayment(Long id) {
 		paymentRepository.deleteById(id);
 	}
+	
+	public boolean isPaymentCompleted(Long id) {
+	    return paymentRepository.findById(id).map(Payment::isPaymentCompleted).orElse(false);
+	}
 }
