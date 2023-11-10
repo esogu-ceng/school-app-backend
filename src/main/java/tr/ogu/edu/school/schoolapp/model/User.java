@@ -36,7 +36,7 @@ public class User {
 	@Column(name = "password", nullable = false, length = 15)
 	private String password;
 	@ManyToMany
-	@JoinTable(name = "student_relationship", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+	@JoinTable(name = "student_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
 
 	public User(String name, String surname, String mail, String password, Set<Student> students) {

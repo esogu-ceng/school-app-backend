@@ -34,7 +34,7 @@ public class Term {
 	private Date endDate;
 
 	@ManyToMany
-	@JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
 
 	public Term(String termName, Date startDate, Date endDate, Set<Student> students) {
