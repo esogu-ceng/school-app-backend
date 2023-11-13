@@ -28,9 +28,12 @@ public class InstallmentController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Installment> getInstallmentById(@PathVariable Long id) {
-		return installmentService.getInstallmentById(id).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
+	public ResponseEntity<List<Installment>> getInstallmentsByUserId(@PathVariable Long id) {
+		List<Installment> installments = installmentService.getInstallmentsByUserId(id);
+		if (installments.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(installments);
 	}
 
 	@PostMapping

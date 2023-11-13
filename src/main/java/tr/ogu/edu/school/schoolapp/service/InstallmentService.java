@@ -1,7 +1,6 @@
 package tr.ogu.edu.school.schoolapp.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,8 @@ public class InstallmentService {
 		return installmentRepository.findAll();
 	}
 
-	public Optional<Installment> getInstallmentById(Long id) {
-		return installmentRepository.findById(id);
+	public List<Installment> getInstallmentsByUserId(Long userId) {
+		return installmentRepository.findInstallmentsByUserId(userId);
 	}
 
 	public Installment saveInstallment(Installment installment) {

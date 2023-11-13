@@ -34,11 +34,11 @@ public class Student {
 	private Integer grade;
 
 	@ManyToMany
-	@JoinTable(name = "student_relationship", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JoinTable(name = "student_user", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	private Set<User> users;
 
 	@ManyToMany
-	@JoinTable(name = "enrollments", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
+	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
 	private Set<Term> terms;
 
 	public Student(String name, String surname, Integer grade, Set<User> users, Set<Term> terms) {
