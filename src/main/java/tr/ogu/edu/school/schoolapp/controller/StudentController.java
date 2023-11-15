@@ -40,15 +40,15 @@ public class StudentController {
 		return ResponseEntity.ok(createdStudentDto);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @RequestBody StudentDto studentDto) {
-		StudentDto updatedStudentDto = studentService.updateStudent(id, studentDto);
+	@PutMapping
+	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto) {
+		StudentDto updatedStudentDto = studentService.updateStudent(studentDto.getId(), studentDto);
 		return ResponseEntity.ok(updatedStudentDto);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteStudent(@PathVariable Long id) {
-		boolean result = studentService.deleteStudent(id);
+	@DeleteMapping
+	public ResponseEntity<Boolean> deleteStudent(@RequestBody StudentDto studentDto) {
+		boolean result = studentService.deleteStudent(studentDto.getId());
 		return result ? ResponseEntity.ok(true) : ResponseEntity.notFound().build();
 	}
 }

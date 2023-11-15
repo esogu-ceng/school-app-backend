@@ -44,15 +44,15 @@ public class UserController {
 		return ResponseEntity.ok(createdUserDto);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-		UserDto updatedUserDto = userService.updateUser(id, userDto);
+	@PutMapping
+	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+		UserDto updatedUserDto = userService.updateUser(userDto.getId(), userDto);
 		return ResponseEntity.ok(updatedUserDto);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
-		boolean result = userService.deleteUser(id);
+	@DeleteMapping
+	public ResponseEntity<Boolean> deleteUser(@RequestBody UserDto userDto) {
+		boolean result = userService.deleteUser(userDto.getId());
 		return result ? ResponseEntity.ok(true) : ResponseEntity.notFound().build();
 	}
 }

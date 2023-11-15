@@ -43,14 +43,15 @@ public class PaymentController {
 		return ResponseEntity.ok(newPayment);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<PaymentDto> updatePayment(@PathVariable Long id, @RequestBody PaymentDto paymentDto) {
-		PaymentDto updatedPayment = paymentService.updatePayment(id, paymentDto);
+	@PutMapping
+	public ResponseEntity<PaymentDto> updatePayment(@RequestBody PaymentDto paymentDto) {
+		PaymentDto updatedPayment = paymentService.updatePayment(paymentDto.getId(), paymentDto);
 		return ResponseEntity.ok(updatedPayment);
 	}
 
 	@DeleteMapping("/{id}")
-	public boolean deletePayment(@PathVariable Long id) {
-		return paymentService.deletePayment(id);
+	public ResponseEntity<Boolean> deletePayment(@PathVariable Long id) {
+		boolean result = paymentService.deletePayment(id);
+		return result ? ResponseEntity.ok(true) : ResponseEntity.notFound().build();
 	}
 }
