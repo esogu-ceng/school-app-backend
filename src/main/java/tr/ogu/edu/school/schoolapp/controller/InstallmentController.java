@@ -18,7 +18,7 @@ import tr.ogu.edu.school.schoolapp.dto.InstallmentDto;
 import tr.ogu.edu.school.schoolapp.service.InstallmentService;
 
 @RestController
-@RequestMapping("/installments")
+@RequestMapping(value = "/installments")
 @RequiredArgsConstructor
 public class InstallmentController {
 
