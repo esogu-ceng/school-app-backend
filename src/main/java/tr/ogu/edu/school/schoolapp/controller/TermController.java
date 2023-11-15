@@ -40,9 +40,9 @@ public class TermController {
 		return ResponseEntity.ok(createdTerm);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<TermDto> updateTerm(@PathVariable Long id, @RequestBody TermDto termDto) {
-		TermDto updatedTerm = termService.updateTerm(id, termDto);
+	@PutMapping
+	public ResponseEntity<TermDto> updateTerm(@RequestBody TermDto termDto) {
+		TermDto updatedTerm = termService.updateTerm(termDto);
 		return ResponseEntity.ok(updatedTerm);
 	}
 

@@ -37,7 +37,8 @@ public class PaymentService {
 	}
 
 	@Transactional
-	public PaymentDto updatePayment(Long id, PaymentDto paymentDto) {
+	public PaymentDto updatePayment(PaymentDto paymentDto) {
+		Long id = paymentDto.getId();
 		Payment payment = paymentRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Payment not found with id: " + id));
 		payment.setAmount(paymentDto.getAmount());

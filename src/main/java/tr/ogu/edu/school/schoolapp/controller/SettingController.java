@@ -25,10 +25,9 @@ public class SettingController {
 		return ResponseEntity.ok(setting);
 	}
 
-	@PutMapping("/{key}")
-	public ResponseEntity<SettingDto> updateSetting(@PathVariable(name = "key") String key,
-			@RequestBody SettingDto settingDto) {
-		SettingDto updatedSetting = settingService.updateSetting(key, settingDto);
+	@PutMapping
+	public ResponseEntity<SettingDto> updateSetting(@RequestBody SettingDto settingDto) {
+		SettingDto updatedSetting = settingService.updateSetting(settingDto);
 		return ResponseEntity.ok(updatedSetting);
 	}
 }

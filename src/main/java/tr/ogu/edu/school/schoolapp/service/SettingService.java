@@ -29,7 +29,8 @@ public class SettingService {
 	}
 
 	@Transactional
-	public SettingDto updateSetting(String key, SettingDto settingDto) {
+	public SettingDto updateSetting(SettingDto settingDto) {
+		String key = settingDto.getKey();
 		Setting setting = settingRepository.findByKey(key);
 		if (setting != null) {
 			setting.setValue(settingDto.getValue());

@@ -40,7 +40,8 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDto updateUser(Long id, UserDto userDto) {
+	public UserDto updateUser(UserDto userDto) {
+		Long id = userDto.getId();
 		User existingUser = userRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
 		existingUser.setName(userDto.getName());

@@ -37,7 +37,8 @@ public class TermService {
 	}
 
 	@Transactional
-	public TermDto updateTerm(Long id, TermDto termDto) {
+	public TermDto updateTerm(TermDto termDto) {
+		Long id = termDto.getId();
 		Term existingTerm = termRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + id));
 		existingTerm.setTermName(termDto.getTermName());

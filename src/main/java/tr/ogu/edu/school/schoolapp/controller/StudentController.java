@@ -42,13 +42,13 @@ public class StudentController {
 
 	@PutMapping
 	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto) {
-		StudentDto updatedStudentDto = studentService.updateStudent(studentDto.getId(), studentDto);
+		StudentDto updatedStudentDto = studentService.updateStudent(studentDto);
 		return ResponseEntity.ok(updatedStudentDto);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Boolean> deleteStudent(@RequestBody StudentDto studentDto) {
-		boolean result = studentService.deleteStudent(studentDto.getId());
-		return result ? ResponseEntity.ok(true) : ResponseEntity.notFound().build();
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Boolean> deleteStudent(@PathVariable Long id) {
+		boolean result = studentService.deleteStudent(id);
+		return ResponseEntity.ok(result);
 	}
 }

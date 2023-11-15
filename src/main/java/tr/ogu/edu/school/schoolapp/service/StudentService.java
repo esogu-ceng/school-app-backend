@@ -37,7 +37,8 @@ public class StudentService {
 	}
 
 	@Transactional
-	public StudentDto updateStudent(Long id, StudentDto studentDto) {
+	public StudentDto updateStudent(StudentDto studentDto) {
+		Long id = studentDto.getId();
 		Student existingStudent = studentRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + id));
 		existingStudent.setName(studentDto.getName());

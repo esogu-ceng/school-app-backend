@@ -45,7 +45,7 @@ public class PaymentController {
 
 	@PutMapping
 	public ResponseEntity<PaymentDto> updatePayment(@RequestBody PaymentDto paymentDto) {
-		PaymentDto updatedPayment = paymentService.updatePayment(paymentDto.getId(), paymentDto);
+		PaymentDto updatedPayment = paymentService.updatePayment(paymentDto);
 		return ResponseEntity.ok(updatedPayment);
 	}
 
