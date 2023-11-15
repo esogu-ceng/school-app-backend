@@ -1,5 +1,11 @@
 package tr.ogu.edu.school.schoolapp.dto;
 
-public class StudentDto {
+import lombok.Data;
 
+@Data
+public class StudentDto {
+	private Long id;
+	private String name;
+	private String surname;
+	private Integer grade;
 }

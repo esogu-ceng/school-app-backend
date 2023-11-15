@@ -1,10 +1,14 @@
 package tr.ogu.edu.school.schoolapp.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tr.ogu.edu.school.schoolapp.dto.UserDto;
+import tr.ogu.edu.school.schoolapp.mapper.UserMapper;
 import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.UserRepository;
 
@@ -14,37 +18,44 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
+	public List<UserDto> getAllUsers() {
+		List<User> users = userRepository.findAll();
+		return users.stream().map(UserMapper::toUserDto).collect(Collectors.toList());
 	}
 
-	public User getUserById(Long id) {
+	public UserDto getUserById(Long id) {
 		if (id == null) {
-			return null;
+			throw new IllegalArgumentException("User ID cannot be null");
 		}
-		return userRepository.findById(id).orElse(null);
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+		return UserMapper.toUserDto(user);
 	}
 
-	public String saveUser(User user) {
-		String username = user.getName();
-		String password = user.getPassword();
-		String name = user.getName();
-		String surname = user.getSurname();
-
-		if (username == null || username.isEmpty() || password == null || password.isEmpty() || name == null
-				|| name.isEmpty() || surname == null || surname.isEmpty()) {
-			return "Missing or incorrect user information. Please fill in all fields";
-		}
-
-		userRepository.save(user);
-		return "User saved";
+	@Transactional
+	public UserDto createUser(UserDto userDto) {
+		User user = UserMapper.fromUserDto(userDto);
+		user = userRepository.save(user);
+		return UserMapper.toUserDto(user);
 	}
 
-	public String deleteUser(Long id) {
-		if (id == null) {
-			return "User id is null";
+	@Transactional
+	public UserDto updateUser(Long id, UserDto userDto) {
+		User existingUser = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+		existingUser.setName(userDto.getName());
+		existingUser.setSurname(userDto.getSurname());
+		existingUser.setMail(userDto.getMail());
+		// todo hash password
+		existingUser = userRepository.save(existingUser);
+		return UserMapper.toUserDto(existingUser);
+	}
+
+	public boolean deleteUser(Long id) {
+		if (id == null || !userRepository.existsById(id)) {
+			return false;
 		}
 		userRepository.deleteById(id);
-		return "User deleted";
+		return true;
 	}
 }
