@@ -17,7 +17,11 @@ public class InstallmentService {
 
 	private final InstallmentRepository installmentRepository;
 
+	// FIXME: Bu metod, Spring Security entegrasyonu tamamlandığında, oturum açan
+	// kullanıcının gerçek kimliği ile güncellenmeli.
 	public List<InstallmentDto> getInstallmentsByUserId(Long userId) {
+		// Şu anda geçici olarak 'userId' sabit bir değer olarak kullanılan bu kısım,
+		// oturum açan kullanıcının kimliğiyle değiştirilmeli.
 		return installmentRepository.findInstallmentsByUserId(userId).stream().map(InstallmentMapper::toInstallmentDto)
 				.collect(Collectors.toList());
 	}
@@ -28,7 +32,8 @@ public class InstallmentService {
 		return InstallmentMapper.toInstallmentDto(savedInstallment);
 	}
 
-	public InstallmentDto updateInstallment(Long id, InstallmentDto installmentDto) {
+	public InstallmentDto updateInstallment(InstallmentDto installmentDto) {
+		Long id = installmentDto.getId();
 		if (!installmentRepository.existsById(id)) {
 			throw new RuntimeException("Installment not found with id: " + id);
 		}

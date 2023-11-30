@@ -24,8 +24,12 @@ public class InstallmentController {
 
 	private final InstallmentService installmentService;
 
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<InstallmentDto>> getInstallmentsByUserId(@PathVariable Long userId) {
+	@GetMapping("/my-installments")
+	public ResponseEntity<List<InstallmentDto>> getInstallmentsForCurrentUser() {
+		// FIXME: Oturum açan kullanıcının bilgilerini Spring Security üzerinden alacak
+		// şekilde güncellenmeli.
+		// Örnek olarak geçici bir userId kullanılmıştır.
+		Long userId = 1L; // Bu kısım, oturum açan kullanıcının kimliğiyle değiştirilmeli.
 		List<InstallmentDto> installments = installmentService.getInstallmentsByUserId(userId);
 		if (installments.isEmpty()) {
 			return ResponseEntity.notFound().build();
@@ -39,10 +43,9 @@ public class InstallmentController {
 		return new ResponseEntity<>(savedInstallment, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<InstallmentDto> updateInstallment(@PathVariable Long id,
-			@RequestBody InstallmentDto installmentDto) {
-		InstallmentDto updatedInstallment = installmentService.updateInstallment(id, installmentDto);
+	@PutMapping
+	public ResponseEntity<InstallmentDto> updateInstallment(@RequestBody InstallmentDto installmentDto) {
+		InstallmentDto updatedInstallment = installmentService.updateInstallment(installmentDto);
 		return ResponseEntity.ok(updatedInstallment);
 	}
 
