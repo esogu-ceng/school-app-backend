@@ -18,8 +18,13 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 
-	public List<PaymentDto> getAllPayments() {
-		List<Payment> payments = paymentRepository.findAll();
+	// FIXME: Bu metod ileride, kullanıcının ödemelerini getirecek şekilde
+	// güncellenecektir.
+	public List<PaymentDto> getPaymentsForCurrentUser(String currentUserMail) {
+		// Ödeme repository'sinde uygun sorgu metodunu tanımlayana kadar geçici bir
+		// çözüm
+		// Şu anda tüm ödemeleri döndürüyor, ancak bu ileride değişecek.
+		List<Payment> payments = paymentRepository.findAll(); // Geçici olarak tüm ödemeleri getir
 		return payments.stream().map(PaymentMapper::toPaymentDto).collect(Collectors.toList());
 	}
 

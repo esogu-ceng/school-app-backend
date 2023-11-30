@@ -3,6 +3,7 @@ package tr.ogu.edu.school.schoolapp.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -17,6 +18,7 @@ import tr.ogu.edu.school.schoolapp.repository.UserRepository;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public List<UserDto> getAllUsers() {
 		List<User> users = userRepository.findAll();
@@ -35,6 +37,8 @@ public class UserService {
 	@Transactional
 	public UserDto createUser(UserDto userDto) {
 		User user = UserMapper.fromUserDto(userDto);
+		String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+		user.setPassword(encodedPassword);
 		user = userRepository.save(user);
 		return UserMapper.toUserDto(user);
 	}
@@ -47,7 +51,10 @@ public class UserService {
 		existingUser.setName(userDto.getName());
 		existingUser.setSurname(userDto.getSurname());
 		existingUser.setMail(userDto.getMail());
-		// todo hash password
+		if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+			String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+			existingUser.setPassword(encodedPassword);
+		}
 		existingUser = userRepository.save(existingUser);
 		return UserMapper.toUserDto(existingUser);
 	}
