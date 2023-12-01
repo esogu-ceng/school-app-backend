@@ -1,6 +1,7 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.PaymentDto;
+import tr.ogu.edu.school.schoolapp.mapper.PaymentMapper;
+import tr.ogu.edu.school.schoolapp.model.Payment;
 import tr.ogu.edu.school.schoolapp.service.PaymentService;
 import tr.ogu.edu.school.schoolapp.util.JwtUtil;
 
@@ -35,33 +38,23 @@ public class PaymentController {
 
 		// FIXME: Geçici olarak, bu metot oturum açan kullanıcının e-postasını
 		// kullanarak ödemeleri getirecek şekilde güncellenecek.
-		List<PaymentDto> paymentDtos = paymentService.getPaymentsForCurrentUser(userMail);
+		List<Payment> payments = paymentService.getPaymentsForCurrentUser(userMail);
+		List<PaymentDto> paymentDtos = payments.stream().map(PaymentMapper::toPaymentDto).collect(Collectors.toList());
 		return ResponseEntity.ok(paymentDtos);
-	}
-
-	@GetMapping("/{id}")
-	// FIXME: Bu metot güvenlik açısından gözden geçirilmeli ve yalnızca oturum açan
-	// kullanıcıya ait ödemeleri getirecek şekilde güncellenmelidir.
-	public ResponseEntity<PaymentDto> getPaymentById(@PathVariable Long id) {
-		PaymentDto paymentDto = paymentService.getPaymentById(id);
-		if (paymentDto == null) {
-			return ResponseEntity.notFound().build();
-		}
-		// FIXME: Ödemenin gerçekten oturum açan kullanıcıya ait olduğunu
-		// doğrulanmalıdır.
-		return ResponseEntity.ok(paymentDto);
 	}
 
 	@PostMapping
 	public ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto paymentDto) {
-		PaymentDto newPayment = paymentService.createPayment(paymentDto);
-		return ResponseEntity.ok(newPayment);
+		Payment payment = PaymentMapper.fromPaymentDto(paymentDto);
+		Payment newPayment = paymentService.createPayment(payment);
+		return ResponseEntity.ok(PaymentMapper.toPaymentDto(newPayment));
 	}
 
 	@PutMapping
 	public ResponseEntity<PaymentDto> updatePayment(@RequestBody PaymentDto paymentDto) {
-		PaymentDto updatedPayment = paymentService.updatePayment(paymentDto);
-		return ResponseEntity.ok(updatedPayment);
+		Payment payment = PaymentMapper.fromPaymentDto(paymentDto);
+		Payment updatedPayment = paymentService.updatePayment(payment);
+		return ResponseEntity.ok(PaymentMapper.toPaymentDto(updatedPayment));
 	}
 
 	@DeleteMapping("/{id}")

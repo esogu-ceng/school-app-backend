@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.SettingDto;
+import tr.ogu.edu.school.schoolapp.mapper.SettingMapper;
+import tr.ogu.edu.school.schoolapp.model.Setting;
 import tr.ogu.edu.school.schoolapp.service.SettingService;
 
 @RestController
@@ -21,13 +23,13 @@ public class SettingController {
 
 	@GetMapping("/{key}")
 	public ResponseEntity<SettingDto> getSetting(@PathVariable(name = "key") String key) {
-		SettingDto setting = settingService.getSetting(key);
-		return ResponseEntity.ok(setting);
+		Setting setting = settingService.getSetting(key);
+		return ResponseEntity.ok(SettingMapper.toSettingDto(setting));
 	}
 
-	@PutMapping
-	public ResponseEntity<SettingDto> updateSetting(@RequestBody SettingDto settingDto) {
-		SettingDto updatedSetting = settingService.updateSetting(settingDto);
-		return ResponseEntity.ok(updatedSetting);
+	@PutMapping("/{key}")
+	public ResponseEntity<SettingDto> updateSetting(@PathVariable String key, @RequestBody SettingDto settingDto) {
+		Setting updatedSetting = settingService.updateSetting(key, settingDto.getValue());
+		return ResponseEntity.ok(SettingMapper.toSettingDto(updatedSetting));
 	}
 }

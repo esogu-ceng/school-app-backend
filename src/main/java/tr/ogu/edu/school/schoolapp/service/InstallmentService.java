@@ -1,13 +1,11 @@
 package tr.ogu.edu.school.schoolapp.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import tr.ogu.edu.school.schoolapp.dto.InstallmentDto;
-import tr.ogu.edu.school.schoolapp.mapper.InstallmentMapper;
 import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.repository.InstallmentRepository;
 
@@ -17,32 +15,47 @@ public class InstallmentService {
 
 	private final InstallmentRepository installmentRepository;
 
-	// FIXME: Bu metod, Spring Security entegrasyonu tamamlandığında, oturum açan
-	// kullanıcının gerçek kimliği ile güncellenmeli.
-	public List<InstallmentDto> getInstallmentsByUserId(Long userId) {
-		// Şu anda geçici olarak 'userId' sabit bir değer olarak kullanılan bu kısım,
-		// oturum açan kullanıcının kimliğiyle değiştirilmeli.
-		return installmentRepository.findInstallmentsByUserId(userId).stream().map(InstallmentMapper::toInstallmentDto)
-				.collect(Collectors.toList());
+	public List<Installment> getInstallmentsByUserId(Long userId) {
+		// FIXME: Bu metod, oturum açan kullanıcının gerçek kimliği ile güncellenecek.
+		return installmentRepository.findInstallmentsByUserId(userId);
 	}
 
-	public InstallmentDto createInstallment(InstallmentDto installmentDto) {
-		Installment installment = InstallmentMapper.fromInstallmentDto(installmentDto);
-		Installment savedInstallment = installmentRepository.save(installment);
-		return InstallmentMapper.toInstallmentDto(savedInstallment);
-	}
-
-	public InstallmentDto updateInstallment(InstallmentDto installmentDto) {
-		Long id = installmentDto.getId();
-		if (!installmentRepository.existsById(id)) {
-			throw new RuntimeException("Installment not found with id: " + id);
+	@Transactional
+	public Installment createInstallment(Installment installment) {
+		if (installment.getAmount() == null || installment.getDueDate() == null || installment.getTerm() == null
+				|| installment.getStudent() == null) {
+			throw new IllegalArgumentException(
+					"Missing or incorrect installment information. Please fill in all required fields.");
 		}
-		Installment installment = InstallmentMapper.fromInstallmentDto(installmentDto);
-		installment.setId(id);
-		Installment updatedInstallment = installmentRepository.save(installment);
-		return InstallmentMapper.toInstallmentDto(updatedInstallment);
+		return installmentRepository.save(installment);
 	}
 
+	@Transactional
+	public Installment updateInstallment(Installment installment) {
+		if (!installmentRepository.existsById(installment.getId())) {
+			throw new RuntimeException("Installment not found with id: " + installment.getId());
+		}
+
+		if (installment.getAmount() == null || installment.getDueDate() == null || installment.getTerm() == null
+				|| installment.getStudent() == null) {
+			throw new IllegalArgumentException(
+					"Missing or incorrect installment information. Please fill in all required fields.");
+		}
+
+		Installment existingInstallment = installmentRepository.findById(installment.getId()).orElse(null);
+		if (existingInstallment == null) {
+			throw new RuntimeException("Installment not found with id: " + installment.getId());
+		}
+
+		existingInstallment.setAmount(installment.getAmount());
+		existingInstallment.setDueDate(installment.getDueDate());
+		existingInstallment.setTerm(installment.getTerm());
+		existingInstallment.setStudent(installment.getStudent());
+
+		return installmentRepository.save(existingInstallment);
+	}
+
+	@Transactional
 	public void deleteInstallment(Long id) {
 		installmentRepository.deleteById(id);
 	}
