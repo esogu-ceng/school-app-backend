@@ -2,6 +2,7 @@ package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import tr.ogu.edu.school.schoolapp.model.Term;
+import tr.ogu.edu.school.schoolapp.dto.TermDto;
 import tr.ogu.edu.school.schoolapp.service.TermService;
 
 @RestController
@@ -23,31 +24,31 @@ public class TermController {
 	private final TermService termService;
 
 	@GetMapping
-	public List<Term> getAllTerms() {
-		return termService.getAllTerms();
+	public ResponseEntity<List<TermDto>> getAllTerms() {
+		return ResponseEntity.ok(termService.getAllTerms());
 	}
 
 	@GetMapping("/{id}")
-	public Term getTermById(@PathVariable Long id) {
-		return termService.getTermById(id).orElse(null);
+	public ResponseEntity<TermDto> getTermById(@PathVariable Long id) {
+		TermDto termDto = termService.getTermById(id);
+		return ResponseEntity.ok(termDto);
 	}
 
 	@PostMapping
-	public Term createTerm(@RequestBody Term term) {
-		return termService.saveTerm(term);
+	public ResponseEntity<TermDto> createTerm(@RequestBody TermDto termDto) {
+		TermDto createdTerm = termService.createTerm(termDto);
+		return ResponseEntity.ok(createdTerm);
 	}
 
-	@PutMapping("/{id}")
-	public Term updateTerm(@PathVariable Long id, @RequestBody Term term) {
-		if (termService.getTermById(id).isPresent()) {
-			term.setId(id);
-			return termService.saveTerm(term);
-		}
-		return null;
+	@PutMapping
+	public ResponseEntity<TermDto> updateTerm(@RequestBody TermDto termDto) {
+		TermDto updatedTerm = termService.updateTerm(termDto);
+		return ResponseEntity.ok(updatedTerm);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteTerm(@PathVariable Long id) {
-		termService.deleteTerm(id);
+	public ResponseEntity<Boolean> deleteTerm(@PathVariable Long id) {
+		boolean result = termService.deleteTerm(id);
+		return ResponseEntity.ok(result);
 	}
 }

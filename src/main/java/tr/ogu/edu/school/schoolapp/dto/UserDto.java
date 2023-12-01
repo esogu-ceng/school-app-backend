@@ -1,5 +1,16 @@
 package tr.ogu.edu.school.schoolapp.dto;
 
-public class UserDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class UserDto {
+	private Long id;
+	private String name;
+	private String surname;
+	private String mail;
+	private String password;
 }
