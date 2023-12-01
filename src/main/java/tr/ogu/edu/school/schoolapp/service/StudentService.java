@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.StudentDto;
 import tr.ogu.edu.school.schoolapp.mapper.StudentMapper;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 
 @Service
@@ -21,6 +22,10 @@ public class StudentService {
 	public List<StudentDto> getAllStudents() {
 		List<Student> students = studentRepository.findAll();
 		return students.stream().map(StudentMapper::toStudentDto).collect(Collectors.toList());
+  }
+  
+	public List<Student> getByUserId(Long userId) {
+		return studentRepository.getByUserId(userId);
 	}
 
 	public StudentDto getStudentById(Long id) {

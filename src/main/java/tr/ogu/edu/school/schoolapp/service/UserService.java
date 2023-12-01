@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,10 @@ public class UserService {
 	@Transactional
 	public UserDto createUser(UserDto userDto) {
 		User user = UserMapper.fromUserDto(userDto);
+    if (user.getUsername() == null || user.getUsername().isEmpty() || user.getPlainPassword() == null || user.getPlainPassword().isEmpty() || user.getName() == null
+				|| user.getName().isEmpty() || user.getSurname() == null || user.getSurname().isEmpty()) {
+			return "Missing or incorrect user information. Please fill in all fields";
+		}
 		String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 		user.setPassword(encodedPassword);
 		user = userRepository.save(user);
@@ -57,7 +62,7 @@ public class UserService {
 		}
 		existingUser = userRepository.save(existingUser);
 		return UserMapper.toUserDto(existingUser);
-	}
+  }
 
 	public boolean deleteUser(Long id) {
 		if (id == null || !userRepository.existsById(id)) {
