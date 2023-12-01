@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.StudentDto;
+import tr.ogu.edu.school.schoolapp.model.Student;
 import tr.ogu.edu.school.schoolapp.service.StudentService;
-
 
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/students")
 public class StudentController {
 	private final StudentService studentService;
-	
+
 	@GetMapping
 	public List<Student> getByUserId(Long userId) {
 		return studentService.getByUserId(userId);

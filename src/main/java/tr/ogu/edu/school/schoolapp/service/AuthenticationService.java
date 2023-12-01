@@ -1,5 +1,6 @@
 package tr.ogu.edu.school.schoolapp.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,12 @@ public class AuthenticationService {
 			return user;
 		}
 		return null;
+	}
+
+	public User getAuthenticatedUser() {
+
+		// FIXME oturum açan kullanıcı bilgi bir şekilde alınmalı.
+		return (User) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
 	}
 }

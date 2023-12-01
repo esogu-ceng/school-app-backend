@@ -1,7 +1,5 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.TermDto;
+import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
+import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.service.TermService;
 
 @RestController
@@ -23,27 +23,24 @@ public class TermController {
 
 	private final TermService termService;
 
-	@GetMapping
-	public ResponseEntity<List<TermDto>> getAllTerms() {
-		return ResponseEntity.ok(termService.getAllTerms());
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<TermDto> getTermById(@PathVariable Long id) {
-		TermDto termDto = termService.getTermById(id);
-		return ResponseEntity.ok(termDto);
+		Term term = termService.getTermById(id);
+		return ResponseEntity.ok(TermMapper.toTermDto(term));
 	}
 
 	@PostMapping
 	public ResponseEntity<TermDto> createTerm(@RequestBody TermDto termDto) {
-		TermDto createdTerm = termService.createTerm(termDto);
-		return ResponseEntity.ok(createdTerm);
+		Term term = TermMapper.fromTermDto(termDto);
+		Term createdTerm = termService.createTerm(term);
+		return ResponseEntity.ok(TermMapper.toTermDto(createdTerm));
 	}
 
 	@PutMapping
 	public ResponseEntity<TermDto> updateTerm(@RequestBody TermDto termDto) {
-		TermDto updatedTerm = termService.updateTerm(termDto);
-		return ResponseEntity.ok(updatedTerm);
+		Term term = TermMapper.fromTermDto(termDto);
+		Term updatedTerm = termService.updateTerm(term);
+		return ResponseEntity.ok(TermMapper.toTermDto(updatedTerm));
 	}
 
 	@DeleteMapping("/{id}")
