@@ -3,6 +3,9 @@
 ##############################
 .mtj.tmp/
 *.class
+.project
+.classpath
+.settings/
 *.jar
 *.war
 *.ear
@@ -22,8 +25,8 @@ pom.xml.bak
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
+.mvn/
+mvnw*
 
 ##############################
 ## Gradle
