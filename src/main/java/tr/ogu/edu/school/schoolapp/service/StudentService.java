@@ -1,16 +1,12 @@
 package tr.ogu.edu.school.schoolapp.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import tr.ogu.edu.school.schoolapp.dto.StudentDto;
-import tr.ogu.edu.school.schoolapp.mapper.StudentMapper;
 import tr.ogu.edu.school.schoolapp.model.Student;
-import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 
 @Service
@@ -19,40 +15,43 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 
-	public List<StudentDto> getAllStudents() {
-		List<Student> students = studentRepository.findAll();
-		return students.stream().map(StudentMapper::toStudentDto).collect(Collectors.toList());
-  }
-  
-	public List<Student> getByUserId(Long userId) {
-		return studentRepository.getByUserId(userId);
-	}
-
-	public StudentDto getStudentById(Long id) {
-		Student student = studentRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + id));
-		return StudentMapper.toStudentDto(student);
+	public List<Student> getStudentsByUserId(Long userId) {
+		// FIXME:Oturumu açık olan kullanıcının ID'si ile
+		// verilen userId'nin aynı olup olmadığı kontrol edilmelidir.
+		return studentRepository.findStudentsByUserId(userId);
 	}
 
 	@Transactional
-	public StudentDto createStudent(StudentDto studentDto) {
-		Student student = StudentMapper.fromStudentDto(studentDto);
-		student = studentRepository.save(student);
-		return StudentMapper.toStudentDto(student);
+	public Student createStudent(Student student) {
+		if (student.getName() == null || student.getName().isEmpty() || student.getSurname() == null
+				|| student.getSurname().isEmpty() || student.getGrade() == null) {
+			throw new IllegalArgumentException(
+					"Missing or incorrect student information. Please fill in all required fields.");
+		}
+		return studentRepository.save(student);
 	}
 
 	@Transactional
-	public StudentDto updateStudent(StudentDto studentDto) {
-		Long id = studentDto.getId();
-		Student existingStudent = studentRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + id));
-		existingStudent.setName(studentDto.getName());
-		existingStudent.setSurname(studentDto.getSurname());
-		existingStudent.setGrade(studentDto.getGrade());
-		existingStudent = studentRepository.save(existingStudent);
-		return StudentMapper.toStudentDto(existingStudent);
+	public Student updateStudent(Student student) {
+		if (student.getId() == null) {
+			throw new IllegalArgumentException("Student ID cannot be null for an update.");
+		}
+		Student existingStudent = studentRepository.findById(student.getId())
+				.orElseThrow(() -> new IllegalArgumentException("Student not found with id: " + student.getId()));
+
+		if (student.getName() == null || student.getName().isEmpty() || student.getSurname() == null
+				|| student.getSurname().isEmpty() || student.getGrade() == null) {
+			throw new IllegalArgumentException(
+					"Missing or incorrect student information. Please fill in all required fields.");
+		}
+
+		existingStudent.setName(student.getName());
+		existingStudent.setSurname(student.getSurname());
+		existingStudent.setGrade(student.getGrade());
+		return studentRepository.save(existingStudent);
 	}
 
+	@Transactional
 	public boolean deleteStudent(Long id) {
 		if (id == null || !studentRepository.existsById(id)) {
 			return false;

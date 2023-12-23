@@ -1,7 +1,7 @@
 package tr.ogu.edu.school.schoolapp.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -13,11 +13,11 @@ import tr.ogu.edu.school.schoolapp.repository.UserRepository;
 public class AuthenticationService {
 
 	private final UserRepository userRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
 	public User authenticateUser(String email, String password) {
 		User user = userRepository.findByMail(email);
-		if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
+		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
 			return user;
 		}
 		return null;

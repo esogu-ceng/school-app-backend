@@ -1,7 +1,9 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.StudentDto;
+import tr.ogu.edu.school.schoolapp.mapper.StudentMapper;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
+import tr.ogu.edu.school.schoolapp.service.AuthenticationService;
 import tr.ogu.edu.school.schoolapp.service.StudentService;
 
 @RestController
@@ -22,33 +27,37 @@ import tr.ogu.edu.school.schoolapp.service.StudentService;
 @RequestMapping(value = "/students")
 public class StudentController {
 	private final StudentService studentService;
+	private final AuthenticationService authenticationService;
 
-	@GetMapping
-	public List<Student> getByUserId(Long userId) {
-		return studentService.getByUserId(userId);
-	}
+	@GetMapping("/my-students")
+	public ResponseEntity<List<StudentDto>> getMyStudents() {
+		User currentUser = authenticationService.getAuthenticatedUser();
 
-	@GetMapping
-	public ResponseEntity<List<StudentDto>> getAllStudents() {
-		return ResponseEntity.ok(studentService.getAllStudents());
-	}
+		// FIXME: Oturumda olan kullanıcı kontrolü yapılmalıdır. currentUser null ise,
+		// uygun bir hata mesajı dönülmelidir.
+		if (currentUser == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<StudentDto> getStudentById(@PathVariable Long id) {
-		StudentDto studentDto = studentService.getStudentById(id);
-		return ResponseEntity.ok(studentDto);
+		Long userId = currentUser.getId();
+
+		List<Student> students = studentService.getStudentsByUserId(userId);
+		List<StudentDto> studentDtos = students.stream().map(StudentMapper::toStudentDto).collect(Collectors.toList());
+		return ResponseEntity.ok(studentDtos);
 	}
 
 	@PostMapping
 	public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto) {
-		StudentDto createdStudentDto = studentService.createStudent(studentDto);
-		return ResponseEntity.ok(createdStudentDto);
+		Student student = StudentMapper.fromStudentDto(studentDto);
+		Student createdStudent = studentService.createStudent(student);
+		return ResponseEntity.ok(StudentMapper.toStudentDto(createdStudent));
 	}
 
 	@PutMapping
 	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto) {
-		StudentDto updatedStudentDto = studentService.updateStudent(studentDto);
-		return ResponseEntity.ok(updatedStudentDto);
+		Student student = StudentMapper.fromStudentDto(studentDto);
+		Student updatedStudent = studentService.updateStudent(student);
+		return ResponseEntity.ok(StudentMapper.toStudentDto(updatedStudent));
 	}
 
 	@DeleteMapping("/{id}")
