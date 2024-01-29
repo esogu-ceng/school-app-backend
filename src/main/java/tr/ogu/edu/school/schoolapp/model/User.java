@@ -33,7 +33,7 @@ public class User {
 	@Column(name = "mail", unique = true, nullable = false, length = 30)
 	private String mail;
 
-	@Column(name = "password", nullable = false, length = 15)
+	@Column(name = "password", nullable = false)
 	private String password;
 	@ManyToMany
 	@JoinTable(name = "student_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
