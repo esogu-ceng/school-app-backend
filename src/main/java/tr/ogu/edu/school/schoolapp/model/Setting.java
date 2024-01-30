@@ -1,5 +1,7 @@
 package tr.ogu.edu.school.schoolapp.model;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -8,31 +10,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+/**
+ * The persistent class for the settings database table.
+ * 
+ */
 @Entity
+@Data
 @Table(name = "settings")
-public class Setting {
+public class Setting implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "key", nullable = false, unique = true)
-	private String key;
-
-	@Column(name = "value")
-	private String value;
-
 	@Column(name = "create_date")
-	private LocalDateTime createDate;
+	private Timestamp createDate;
+
+	private String key;
 
 	@Column(name = "update_date")
 	private LocalDateTime updateDate;
+
+	private String value;
 
 }

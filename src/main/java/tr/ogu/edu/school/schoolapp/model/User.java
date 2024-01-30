@@ -1,50 +1,79 @@
 package tr.ogu.edu.school.schoolapp.model;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The persistent class for the user database table.
+ * 
+ */
 @Entity
-@Table(name = "users")
-@NoArgsConstructor
 @Data
-public class User {
+@AllArgsConstructor
+@NoArgsConstructor
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false, length = 32)
-	private String name;
-
-	@Column(name = "surname", nullable = false, length = 32)
-	private String surname;
-
-	@Column(name = "mail", unique = true, nullable = false, length = 30)
 	private String mail;
 
-	@Column(name = "password", nullable = false, length = 15)
-	private String password;
-	@ManyToMany
-	@JoinTable(name = "student_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
-	private Set<Student> students;
+	private String name;
 
-	public User(String name, String surname, String mail, String password, Set<Student> students) {
-		this.name = name;
-		this.surname = surname;
-		this.mail = mail;
-		this.password = password;
-		this.students = students;
+	private String surname;
+
+	private String password;
+
+	// bi-directional many-to-one association to ActSessionHall
+	@OneToMany(mappedBy = "user")
+	private List<ActSessionHall> actSessionHalls;
+
+	// bi-directional many-to-one association to ActTicket
+	@OneToMany(mappedBy = "user")
+	private List<ActTicket> actTickets;
+
+	// bi-directional many-to-many association to Student
+	@ManyToMany(mappedBy = "users")
+	private List<Student> students;
+
+	public ActSessionHall addActSessionHall(ActSessionHall actSessionHall) {
+		getActSessionHalls().add(actSessionHall);
+		actSessionHall.setUser(this);
+
+		return actSessionHall;
+	}
+
+	public ActSessionHall removeActSessionHall(ActSessionHall actSessionHall) {
+		getActSessionHalls().remove(actSessionHall);
+		actSessionHall.setUser(null);
+
+		return actSessionHall;
+	}
+
+	public ActTicket addActTicket(ActTicket actTicket) {
+		getActTickets().add(actTicket);
+		actTicket.setUser(this);
+
+		return actTicket;
+	}
+
+	public ActTicket removeActTicket(ActTicket actTicket) {
+		getActTickets().remove(actTicket);
+		actTicket.setUser(null);
+
+		return actTicket;
 	}
 
 }

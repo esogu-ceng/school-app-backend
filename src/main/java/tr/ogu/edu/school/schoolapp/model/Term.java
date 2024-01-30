@@ -1,46 +1,64 @@
 package tr.ogu.edu.school.schoolapp.model;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ * The persistent class for the term database table.
+ * 
+ */
 @Entity
-@Table(name = "term")
-@NoArgsConstructor
 @Data
-public class Term {
+public class Term implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "term_name", nullable = false, length = 30)
-	private String termName;
-
-	@Column(name = "start_date", nullable = false)
-	private Date startDate;
-
-	@Column(name = "end_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "end_date")
 	private Date endDate;
 
-	@ManyToMany
-	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
-	private Set<Student> students;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "start_date")
+	private Date startDate;
 
-	public Term(String termName, Date startDate, Date endDate, Set<Student> students) {
-		this.termName = termName;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.students = students;
+	@Column(name = "term_name")
+	private String termName;
+
+	// bi-directional many-to-one association to Installment
+	@OneToMany(mappedBy = "term")
+	private List<Installment> installments;
+
+	// bi-directional many-to-many association to Student
+	@ManyToMany(mappedBy = "terms")
+	private List<Student> students;
+
+	public Installment addInstallment(Installment installment) {
+		getInstallments().add(installment);
+		installment.setTerm(this);
+
+		return installment;
 	}
+
+	public Installment removeInstallment(Installment installment) {
+		getInstallments().remove(installment);
+		installment.setTerm(null);
+
+		return installment;
+	}
+
 }

@@ -8,8 +8,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,8 +38,8 @@ class UserServiceTest {
 
 	@Test
 	void whenCreateUser_thenShouldReturnSavedUser() {
-		User userToSave = new User("Test", "User", "test@mail.com", "pass123", new HashSet<>());
-		User savedUser = new User("Test", "User", "test@mail.com", "hashedpass", new HashSet<>());
+		User userToSave = new User(null, "test@mail.com", "Testname", "Testsurname", "pass123", null, null, null);
+		User savedUser = new User(null, "test@mail.com", "Testname", "Testsurname", "hashedpass", null, null, null);
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(passwordEncoder.encode("pass123")).thenReturn("hashedpass");
 
