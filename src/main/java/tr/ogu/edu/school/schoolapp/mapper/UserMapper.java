@@ -1,5 +1,10 @@
 package tr.ogu.edu.school.schoolapp.mapper;
 
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import tr.ogu.edu.school.schoolapp.dto.StudentDto;
 import tr.ogu.edu.school.schoolapp.dto.UserDto;
 import tr.ogu.edu.school.schoolapp.model.User;
 
@@ -13,6 +18,10 @@ public class UserMapper {
 		userDto.setName(user.getName());
 		userDto.setSurname(user.getSurname());
 		userDto.setMail(user.getMail());
+		userDto.setPassword(user.getPassword());
+		Set<StudentDto> studentDtos = user.getStudents().stream().map(StudentMapper::toStudentDto)
+				.collect(Collectors.toSet());
+		userDto.setStudents(studentDtos);
 		return userDto;
 	}
 
@@ -22,6 +31,13 @@ public class UserMapper {
 		user.setName(userDto.getName());
 		user.setSurname(userDto.getSurname());
 		user.setMail(userDto.getMail());
+		user.setPassword(userDto.getPassword());
+		if (userDto.getStudents() != null && !userDto.getStudents().isEmpty()) {
+			user.setStudents(
+					userDto.getStudents().stream().map(StudentMapper::fromStudentDto).collect(Collectors.toList()));
+		} else {// Eğer students boşsa boş set oluşturulur.
+			user.setStudents(new ArrayList<>());
+		}
 		return user;
 	}
 }

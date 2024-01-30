@@ -3,6 +3,7 @@ package tr.ogu.edu.school.schoolapp.model;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,12 +29,14 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "mail", unique = true, nullable = false, length = 100)
 	private String mail;
 
 	private String name;
 
 	private String surname;
 
+	@Column(name = "password", nullable = false)
 	private String password;
 
 	// bi-directional many-to-one association to ActSessionHall
