@@ -14,5 +14,11 @@ public interface InstallmentRepository extends JpaRepository<Installment, Long> 
 	// TODO: Sorgunun birdenf azla kullanıcı ve öğrenci için test edilmesi gerekir.
 	@Query("SELECT i FROM Installment i JOIN i.student s JOIN s.users u WHERE u.id = :userId")
 	List<Installment> findInstallmentsByUserId(Long userId);
+	
+	@Query("SELECT i FROM Installment i WHERE i.amount <= i.paidAmount")
+    List<Installment> findPaidInstallments();
+
+    @Query("SELECT i FROM Installment i WHERE i.amount > i.paidAmount")
+    List<Installment> findUnpaidInstallments();
 
 }

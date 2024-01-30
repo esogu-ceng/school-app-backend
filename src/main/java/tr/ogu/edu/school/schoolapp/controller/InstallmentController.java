@@ -58,4 +58,15 @@ public class InstallmentController {
 		installmentService.deleteInstallment(id);
 		return ResponseEntity.noContent().build();
 	}
+	@GetMapping("/paid")
+    public ResponseEntity<List<Installment>> getPaidInstallments() {
+		List<Installment> paidInstallments = installmentService.getPaidInstallments();
+        return ResponseEntity.ok(paidInstallments);
+    }
+
+    @GetMapping("/unpaid")
+    public ResponseEntity<List<Installment>> getUnpaidInstallments() {
+    	  List<Installment> unpaidInstallments = installmentService.getUnpaidInstallments();
+          return ResponseEntity.ok(unpaidInstallments);
+    }
 }

@@ -25,6 +25,9 @@ public class Installment {
 
 	@Column(name = "amount", nullable = false)
 	private Double amount;
+	
+	@Column(name = "paid_amount", nullable = false, columnDefinition = "DOUBLE DEFAULT 0.0")
+    private Double paidAmount;
 
 	@Column(name = "due_date", nullable = false)
 	private Date dueDate;
@@ -41,8 +44,9 @@ public class Installment {
 	@JoinColumn(name = "payment_id", insertable = false, updatable = false)
 	private Payment payment;
 
-	public Installment(Double amount, Date dueDate, Term term, Student student, Payment payment) {
+	public Installment(Double amount, Double paid_amount,Date dueDate, Term term, Student student, Payment payment) {
 		this.amount = amount;
+		this.paidAmount=paid_amount;
 		this.dueDate = dueDate;
 		this.term = term;
 		this.student = student;
