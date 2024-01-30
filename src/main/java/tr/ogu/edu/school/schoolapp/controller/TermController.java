@@ -1,5 +1,8 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.TermDto;
 import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
+import tr.ogu.edu.school.schoolapp.model.Payment;
 import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.service.TermService;
 
@@ -48,4 +52,10 @@ public class TermController {
 		boolean result = termService.deleteTerm(id);
 		return ResponseEntity.ok(result);
 	}
+	
+	@GetMapping("/{termId}/payments")
+    public ResponseEntity<List<Payment>> getPaymentsByTermId(@PathVariable Long termId) {
+        List<Payment> payments = termService.getPaymentsByTermId(termId);
+        return new ResponseEntity<>(payments, HttpStatus.OK);
+    }
 }

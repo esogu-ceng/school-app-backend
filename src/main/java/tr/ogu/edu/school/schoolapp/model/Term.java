@@ -1,6 +1,8 @@
 package tr.ogu.edu.school.schoolapp.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -11,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,11 +40,14 @@ public class Term {
 	@ManyToMany
 	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
-
-	public Term(String termName, Date startDate, Date endDate, Set<Student> students) {
+	@OneToMany(mappedBy = "term")
+	private List<Installment> installments;
+	
+	public Term(String termName, Date startDate, Date endDate, Set<Student> students,List<Installment> installments) {
 		this.termName = termName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.students = students;
+		this.installments=installments;
 	}
 }

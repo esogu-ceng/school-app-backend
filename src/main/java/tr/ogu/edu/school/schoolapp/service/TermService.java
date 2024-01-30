@@ -1,10 +1,18 @@
 package tr.ogu.edu.school.schoolapp.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Term;
+import tr.ogu.edu.school.schoolapp.model.Installment;
+import tr.ogu.edu.school.schoolapp.model.Payment;
+
+
 import tr.ogu.edu.school.schoolapp.repository.TermRepository;
 
 @Service
@@ -48,4 +56,19 @@ public class TermService {
 		termRepository.deleteById(id);
 		return true;
 	}
+	
+	@Transactional(readOnly = true)
+    public List<Payment> getPaymentsByTermId(Long termId) {
+        Term term = termRepository.findById(termId)
+                .orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + termId));
+        
+        List<Payment> payments = new ArrayList<>();
+        for (Installment installment : term.getInstallments()) {
+            Payment payment = installment.getPayment();
+            if (payment != null) {
+                payments.add(payment);
+            }
+        }
+        return payments;
+    }
 }
