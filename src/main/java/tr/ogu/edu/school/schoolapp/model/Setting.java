@@ -29,6 +29,7 @@ public class Setting implements Serializable {
 	@Column(name = "create_date")
 	private Timestamp createDate;
 
+	@Column(name = "key", nullable = false, unique = true)
 	private String key;
 
 	@Column(name = "update_date")
