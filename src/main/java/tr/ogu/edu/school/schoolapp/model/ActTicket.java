@@ -8,40 +8,45 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 /**
- * The persistent class for the installment database table.
+ * The persistent class for the act_ticket database table.
  * 
  */
 @Entity
 @Data
-public class Installment implements Serializable {
+@Table(name = "act_ticket")
+public class ActTicket implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Double amount;
+	private String filepath;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "due_date")
-	private Date dueDate;
+	@Column(name = "session_date")
+	private Date sessionDate;
 
-	// bi-directional many-to-one association to Payment
-	@ManyToOne
-	private Payment payment;
+	private String status;
 
-	// bi-directional many-to-one association to Student
-	@ManyToOne
-	private Student student;
+	@Column(name = "verification_code")
+	private String verificationCode;
 
-	// bi-directional many-to-one association to Term
+	// bi-directional many-to-one association to ActSessionHall
 	@ManyToOne
-	private Term term;
+	@JoinColumn(name = "session_hall_id")
+	private ActSessionHall actSessionHall;
+
+	// bi-directional many-to-one association to User
+	@ManyToOne
+	private User user;
 
 }

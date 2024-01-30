@@ -1,8 +1,8 @@
 package tr.ogu.edu.school.schoolapp.model;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,42 +10,62 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ * The persistent class for the student database table.
+ * 
+ */
 @Entity
-@Table(name = "student")
-@NoArgsConstructor
 @Data
-public class Student {
+public class Student implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", length = 32, nullable = false)
-	private String name;
-
-	@Column(name = "surname", length = 32, nullable = false)
-	private String surname;
-
-	@Column(name = "grade", nullable = false)
 	private Integer grade;
 
-	@ManyToMany
-	@JoinTable(name = "student_user", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Set<User> users;
+	private String name;
 
-	@ManyToMany
-	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "term_id"))
-	private Set<Term> terms;
+	private String surname;
 
-	public Student(String name, String surname, Integer grade, Set<User> users, Set<Term> terms) {
-		this.name = name;
-		this.surname = surname;
-		this.grade = grade;
-		this.users = users;
-		this.terms = terms;
+	// bi-directional many-to-one association to Installment
+	@OneToMany(mappedBy = "student")
+	private List<Installment> installments;
+
+	// bi-directional many-to-many association to Term
+	@ManyToMany
+	@JoinTable(name = "student_term", joinColumns = {
+			@JoinColumn(name = "student_id")
+	}, inverseJoinColumns = {
+			@JoinColumn(name = "term_id")
+	})
+	private List<Term> terms;
+
+	// bi-directional many-to-many association to User
+	@ManyToMany
+	@JoinTable(name = "student_user", joinColumns = {
+			@JoinColumn(name = "student_id")
+	}, inverseJoinColumns = {
+			@JoinColumn(name = "user_id")
+	})
+	private List<User> users;
+
+	public Installment addInstallment(Installment installment) {
+		getInstallments().add(installment);
+		installment.setStudent(this);
+
+		return installment;
 	}
+
+	public Installment removeInstallment(Installment installment) {
+		getInstallments().remove(installment);
+		installment.setStudent(null);
+
+		return installment;
+	}
+
 }

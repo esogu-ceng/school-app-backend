@@ -1,6 +1,6 @@
 package tr.ogu.edu.school.schoolapp.mapper;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,9 +34,9 @@ public class UserMapper {
 		user.setPassword(userDto.getPassword());
 		if (userDto.getStudents() != null && !userDto.getStudents().isEmpty()) {
 			user.setStudents(
-					userDto.getStudents().stream().map(StudentMapper::fromStudentDto).collect(Collectors.toSet()));
+					userDto.getStudents().stream().map(StudentMapper::fromStudentDto).collect(Collectors.toList()));
 		} else {// Eğer students boşsa boş set oluşturulur.
-			user.setStudents(new HashSet<>());
+			user.setStudents(new ArrayList<>());
 		}
 		return user;
 	}
