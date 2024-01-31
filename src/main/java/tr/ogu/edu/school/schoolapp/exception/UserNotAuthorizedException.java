@@ -2,10 +2,21 @@ package tr.ogu.edu.school.schoolapp.exception;
 
 import org.hibernate.service.spi.ServiceException;
 
-@SuppressWarnings("serial")
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UserNotAuthorizedException extends ServiceException {
 
+	private static final long serialVersionUID = 1L;
+
+	private static String message = "Yetki Yok";
+
 	public UserNotAuthorizedException() {
-		super("Authentication error!");
+		super(message);
+	}
+
+	public UserNotAuthorizedException(Exception e) {
+		this();
+		log.error(message, e);
 	}
 }
