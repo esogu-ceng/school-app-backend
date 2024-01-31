@@ -5,16 +5,17 @@ import org.hibernate.service.spi.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PasswordsNotMatchedException extends ServiceException {
+public class ReportTemplateNotFoundException extends ServiceException {
 
 	private static final long serialVersionUID = 1L;
-	private static String message = "Parola uyuşmuyor";
 
-	public PasswordsNotMatchedException() {
+	private static String message = "Rapor şablon dosyası bulunamadı";
+
+	public ReportTemplateNotFoundException() {
 		super(message);
 	}
 
-	public PasswordsNotMatchedException(Exception e) {
+	public ReportTemplateNotFoundException(Exception e) {
 		this();
 		log.error(message, e);
 	}
