@@ -62,26 +62,11 @@ public class InstallmentService {
 	}
 	
 	public List<Installment> getPaidInstallments() {
-		List<Installment> allInstallments = installmentRepository.findAll();
-        List<Installment> paidInstallments = new ArrayList<>();
-
-        for (Installment installment : allInstallments) {
-            if (installment.getPaidAmount() >= installment.getAmount()) {
-                paidInstallments.add(installment);
-            }
-        }
-        return paidInstallments;
+        return installmentRepository.findPaidInstallments();
     }
 
     public List<Installment> getUnpaidInstallments() {
-    	List<Installment> allInstallments = installmentRepository.findAll();
-        List<Installment> unpaidInstallments = new ArrayList<>();
+        return installmentRepository.findUnpaidInstallments();
 
-        for (Installment installment : allInstallments) {
-            if (installment.getPaidAmount() < installment.getAmount()) {
-                unpaidInstallments.add(installment);
-            }
-        }
-        return unpaidInstallments;
     }
 }
