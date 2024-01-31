@@ -56,19 +56,9 @@ public class TermService {
 		termRepository.deleteById(id);
 		return true;
 	}
-	
 	@Transactional(readOnly = true)
-    public List<Payment> getPaymentsByTermId(Long termId) {
-        Term term = termRepository.findById(termId)
-                .orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + termId));
-        
-        List<Payment> payments = new ArrayList<>();
-        for (Installment installment : term.getInstallments()) {
-            Payment payment = installment.getPayment();
-            if (payment != null) {
-                payments.add(payment);
-            }
-        }
-        return payments;
+    public List<Installment> getInstallmentsForTermAndStudents(Long termId, Set<Long> studentIds) {
+        return termRepository.findInstallmentsByTermIdAndStudentIds(termId, studentIds);
     }
+	
 }

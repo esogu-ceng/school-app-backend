@@ -40,14 +40,11 @@ public class Term {
 	@ManyToMany
 	@JoinTable(name = "student_term", joinColumns = @JoinColumn(name = "term_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
 	private Set<Student> students;
-	@OneToMany(mappedBy = "term")
-	private List<Installment> installments;
 	
-	public Term(String termName, Date startDate, Date endDate, Set<Student> students,List<Installment> installments) {
+	public Term(String termName, Date startDate, Date endDate, Set<Student> students) {
 		this.termName = termName;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.students = students;
-		this.installments=installments;
 	}
 }

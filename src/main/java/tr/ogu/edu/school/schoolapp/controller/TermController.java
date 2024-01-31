@@ -1,6 +1,7 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.TermDto;
 import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
+import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.model.Payment;
 import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.service.TermService;
@@ -52,10 +55,11 @@ public class TermController {
 		boolean result = termService.deleteTerm(id);
 		return ResponseEntity.ok(result);
 	}
-	
-	@GetMapping("/{termId}/payments")
-    public ResponseEntity<List<Payment>> getPaymentsByTermId(@PathVariable Long termId) {
-        List<Payment> payments = termService.getPaymentsByTermId(termId);
-        return new ResponseEntity<>(payments, HttpStatus.OK);
+	@GetMapping("/{termId}/installments")
+    public ResponseEntity<List<Installment>> getInstallmentsForTermAndStudents(
+            @PathVariable("termId") Long termId,
+            @RequestParam("studentIds") Set<Long> studentIds) {
+        List<Installment> installments = termService.getInstallmentsForTermAndStudents(termId, studentIds);
+        return ResponseEntity.ok(installments);
     }
 }
