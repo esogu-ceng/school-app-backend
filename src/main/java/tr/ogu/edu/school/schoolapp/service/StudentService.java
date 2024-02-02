@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 
 @Service
@@ -14,11 +15,14 @@ import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
+	private final AuthenticationService authenticationService;
 
-	public List<Student> getStudentsByUserId(Long userId) {
-		// FIXME:Oturumu açık olan kullanıcının ID'si ile
-		// verilen userId'nin aynı olup olmadığı kontrol edilmelidir.
-		return studentRepository.findStudentsByUserId(userId);
+	public List<Student> getMyStudents() {
+		User currentUser = authenticationService.getAuthenticatedUser();
+		if (currentUser == null) {
+			throw new IllegalStateException("No authenticated user found.");
+		}
+		return studentRepository.findStudentsByUserId(currentUser.getId());
 	}
 
 	@Transactional

@@ -11,7 +11,6 @@ import tr.ogu.edu.school.schoolapp.model.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-	// TODO: yazılan query test edilmelidir.
 	@Query("SELECT s FROM Student s JOIN s.users u WHERE u.id = :userId")
 	List<Student> findStudentsByUserId(@Param("userId") Long userId);
 }

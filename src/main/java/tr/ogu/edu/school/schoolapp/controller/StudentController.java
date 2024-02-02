@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.StudentDto;
 import tr.ogu.edu.school.schoolapp.mapper.StudentMapper;
 import tr.ogu.edu.school.schoolapp.model.Student;
-import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.service.AuthenticationService;
 import tr.ogu.edu.school.schoolapp.service.StudentService;
 
@@ -31,19 +30,14 @@ public class StudentController {
 
 	@GetMapping("/my-students")
 	public ResponseEntity<List<StudentDto>> getMyStudents() {
-		User currentUser = authenticationService.getAuthenticatedUser();
-
-		// FIXME: Oturumda olan kullanıcı kontrolü yapılmalıdır. currentUser null ise,
-		// uygun bir hata mesajı dönülmelidir.
-		if (currentUser == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		try {
+			List<Student> students = studentService.getMyStudents();
+			List<StudentDto> studentDtos = students.stream().map(StudentMapper::toStudentDto)
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(studentDtos);
+		} catch (IllegalStateException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
-
-		Long userId = currentUser.getId();
-
-		List<Student> students = studentService.getStudentsByUserId(userId);
-		List<StudentDto> studentDtos = students.stream().map(StudentMapper::toStudentDto).collect(Collectors.toList());
-		return ResponseEntity.ok(studentDtos);
 	}
 
 	@PostMapping
