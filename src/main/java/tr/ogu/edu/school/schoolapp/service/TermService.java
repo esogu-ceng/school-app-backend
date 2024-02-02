@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.model.Payment;
-
-
+import tr.ogu.edu.school.schoolapp.model.Student;
 import tr.ogu.edu.school.schoolapp.repository.TermRepository;
 
 @Service
@@ -56,9 +55,8 @@ public class TermService {
 		termRepository.deleteById(id);
 		return true;
 	}
-	@Transactional(readOnly = true)
-    public List<Installment> getInstallmentsForTermAndStudents(Long termId, Set<Long> studentIds) {
-        return termRepository.findInstallmentsByTermIdAndStudentIds(termId, studentIds);
-    }
+	 public List<Installment> getInstallmentsByTermAndStudent(Term term, Student student) {
+		 return termRepository.findInstallmentsByStudentAndTerm(student, term);
+	}
 	
 }

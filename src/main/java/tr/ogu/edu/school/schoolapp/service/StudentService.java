@@ -14,7 +14,7 @@ import tr.ogu.edu.school.schoolapp.repository.StudentRepository;
 public class StudentService {
 
 	private final StudentRepository studentRepository;
-
+	
 	public List<Student> getStudentsByUserId(Long userId) {
 		// FIXME:Oturumu açık olan kullanıcının ID'si ile
 		// verilen userId'nin aynı olup olmadığı kontrol edilmelidir.
@@ -59,4 +59,9 @@ public class StudentService {
 		studentRepository.deleteById(id);
 		return true;
 	}
+
+	public Student getStudentById(Long studentId) {
+	    return studentRepository.findById(studentId).orElse(null);
+	}
+
 }

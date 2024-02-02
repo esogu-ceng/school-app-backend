@@ -20,7 +20,10 @@ import tr.ogu.edu.school.schoolapp.dto.TermDto;
 import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
 import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.model.Payment;
+import tr.ogu.edu.school.schoolapp.model.Student;
 import tr.ogu.edu.school.schoolapp.model.Term;
+import tr.ogu.edu.school.schoolapp.service.InstallmentService;
+import tr.ogu.edu.school.schoolapp.service.StudentService;
 import tr.ogu.edu.school.schoolapp.service.TermService;
 
 @RestController
@@ -29,6 +32,7 @@ import tr.ogu.edu.school.schoolapp.service.TermService;
 public class TermController {
 
 	private final TermService termService;
+	private final StudentService studentService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<TermDto> getTermById(@PathVariable Long id) {
@@ -55,11 +59,14 @@ public class TermController {
 		boolean result = termService.deleteTerm(id);
 		return ResponseEntity.ok(result);
 	}
-	@GetMapping("/{termId}/installments")
-    public ResponseEntity<List<Installment>> getInstallmentsForTermAndStudents(
-            @PathVariable("termId") Long termId,
-            @RequestParam("studentIds") Set<Long> studentIds) {
-        List<Installment> installments = termService.getInstallmentsForTermAndStudents(termId, studentIds);
+	@GetMapping("/terms/{termId}/students/{studentId}/installments")
+    public ResponseEntity<List<Installment>> getInstallmentsByTermAndStudent(
+            @PathVariable Long termId, @PathVariable Long studentId) {
+        Term term = termService.getTermById(termId);
+        Student student = studentService.getStudentById(studentId);
+
+        List<Installment> installments = termService.getInstallmentsByTermAndStudent(term, student);
+
         return ResponseEntity.ok(installments);
-    }
+    }	    
 }

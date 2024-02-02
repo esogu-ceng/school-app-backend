@@ -14,6 +14,7 @@ import tr.ogu.edu.school.schoolapp.model.Term;
 
 @Repository
 public interface TermRepository extends JpaRepository<Term, Long> {
-	@Query("SELECT i FROM Installment i WHERE i.term.id = :termId AND i.student.id IN :studentIds")
-    List<Installment> findInstallmentsByTermIdAndStudentIds(@Param("termId") Long termId, @Param("studentIds") Set<Long> studentIds);
+	@Query("SELECT i FROM Installment i WHERE i.student = :student AND i.term = :term")
+    List<Installment> findInstallmentsByStudentAndTerm(@Param("student") Student student, @Param("term") Term term);
+
 }
