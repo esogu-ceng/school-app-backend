@@ -17,16 +17,15 @@ import tr.ogu.edu.school.schoolapp.mapper.UserMapper;
 import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.service.AuthenticationService;
 import tr.ogu.edu.school.schoolapp.service.UserService;
-import tr.ogu.edu.school.schoolapp.util.JwtUtil;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserController {
 
 	private final UserService userService;
 	private final AuthenticationService authenticationService;
-	private final JwtUtil jwtUtil;
+//	private final JwtUtil jwtUtil;
 
 	@GetMapping(value = "authenticated")
 	public ResponseEntity<UserDto> getAuthenticatedUser() {
@@ -64,8 +63,9 @@ public class UserController {
 		User authenticatedUser = authenticationService.authenticateUser(userLoginDto.getMail(),
 				userLoginDto.getPassword());
 		if (authenticatedUser != null) {
-			String token = jwtUtil.generateToken(authenticatedUser);
-			return ResponseEntity.ok(token);
+//			String token = jwtUtil.generateToken(authenticatedUser);
+//			return ResponseEntity.ok(token);
+			return ResponseEntity.ok("User successfully authenticated");
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}

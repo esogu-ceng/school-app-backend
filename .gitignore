@@ -115,3 +115,5 @@ yarn-error.log*
 /build
 HELP.md
 .factorypath
+
+/test/*

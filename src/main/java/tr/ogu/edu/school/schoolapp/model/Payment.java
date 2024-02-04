@@ -1,35 +1,54 @@
 package tr.ogu.edu.school.schoolapp.model;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ * The persistent class for the payment database table.
+ * 
+ */
 @Entity
-@Table(name = "payment")
-@NoArgsConstructor
 @Data
-public class Payment {
+public class Payment implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, updatable = false)
 	private Long id;
 
-	@Column(name = "amount", nullable = false)
 	private Double amount;
 
-	@Column(name = "payment_date", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "payment_date")
 	private Date paymentDate;
 
-	public Payment(Double amount, Date paymentDate) {
-		this.amount = amount;
-		this.paymentDate = paymentDate;
+	// bi-directional many-to-one association to Installment
+	@OneToMany(mappedBy = "payment")
+	private List<Installment> installments;
+
+	public Installment addInstallment(Installment installment) {
+		getInstallments().add(installment);
+		installment.setPayment(this);
+
+		return installment;
+	}
+
+	public Installment removeInstallment(Installment installment) {
+		getInstallments().remove(installment);
+		installment.setPayment(null);
+
+		return installment;
 	}
 
 }

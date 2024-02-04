@@ -38,8 +38,8 @@ public class UserControllerTest {
 
 	@Test
 	void whenLoginWithValidCredentials_thenShouldReturnToken() {
-		UserLoginDto userLoginDto = new UserLoginDto("user@mail.com", "password");
-		User authenticatedUser = new User();
+		UserLoginDto userLoginDto = new UserLoginDto("test@mail.com", "pass123");
+		User authenticatedUser = new User(null, "test@mail.com", "Testname", "Testsurname", "pass123", null, null, null);
 		String token = "exampleToken";
 
 		given(authenticationService.authenticateUser(userLoginDto.getMail(), userLoginDto.getPassword()))
