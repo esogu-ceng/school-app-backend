@@ -21,10 +21,12 @@ import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
 import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.model.Payment;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.service.InstallmentService;
 import tr.ogu.edu.school.schoolapp.service.StudentService;
 import tr.ogu.edu.school.schoolapp.service.TermService;
+import tr.ogu.edu.school.schoolapp.service.UserService;
 
 @RestController
 @AllArgsConstructor
@@ -33,6 +35,7 @@ public class TermController {
 
 	private final TermService termService;
 	private final StudentService studentService;
+	private final UserService userService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<TermDto> getTermById(@PathVariable Long id) {
@@ -60,13 +63,28 @@ public class TermController {
 		return ResponseEntity.ok(result);
 	}
 	@GetMapping("/terms/{termId}/students/{studentId}/installments")
-    public ResponseEntity<List<Installment>> getInstallmentsByTermAndStudent(
-            @PathVariable Long termId, @PathVariable Long studentId) {
-        Term term = termService.getTermById(termId);
-        Student student = studentService.getStudentById(studentId);
+	public ResponseEntity<List<Installment>> getInstallmentsByTermAndStudent(
+	        @PathVariable Long termId, @PathVariable Long studentId, @RequestParam String mail) {
 
-        List<Installment> installments = termService.getInstallmentsByTermAndStudent(term, student);
+	    // Kullanıcıyı maile göre bulur
+	    User user = userService.getUserByMail(mail);
 
-        return ResponseEntity.ok(installments);
-    }	    
+	    // Kullanıcının öğrencilerini alır
+	    List<Student> userStudents = studentService.getStudentsByUserId(user.getId());
+
+	    // Verilen studentId parametresine göre istenen öğrenciyi alır
+	    Student requestedStudent = studentService.getStudentById(studentId);
+
+	    // Eğer istenen öğrenci kullanıcının öğrencileri arasında değilse hata döndür
+	    if (!userStudents.contains(requestedStudent)) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden
+	    }
+
+	    // Öğrenci kullanıcının öğrencileri arasındaysa, taksitleri getir
+	    Term term = termService.getTermById(termId);
+	    List<Installment> installments = termService.getInstallmentsByTermAndStudent(term, requestedStudent);
+
+	    return ResponseEntity.ok(installments);
+	}
+
 }
