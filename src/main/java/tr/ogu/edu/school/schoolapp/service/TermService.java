@@ -1,8 +1,8 @@
 package tr.ogu.edu.school.schoolapp.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
+
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,24 +10,28 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Term;
 import tr.ogu.edu.school.schoolapp.model.Installment;
-import tr.ogu.edu.school.schoolapp.model.Payment;
 import tr.ogu.edu.school.schoolapp.model.Student;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.TermRepository;
+import tr.ogu.edu.school.schoolapp.service.StudentService;
+import tr.ogu.edu.school.schoolapp.service.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class TermService {
 
 	private final TermRepository termRepository;
+	private final AuthenticationService authenticationService;
+	private final StudentService studentService;
+	private final UserService userService;
 
-	public Term getTermById(Long id) {
+	/*public Term getTermById(Long id) {
 		// FIXME sadece kendi öğrencilerine ait dönem için kullanıcı idsi oturum açan
 		// kullanıcıdan alınarak sorguya eklenmeli.
 		// yani findByIDAndUserId gibi bir metot repositorye eklenmeli ve çağrılmalı.
 		Term term = termRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + id));
 		return term;
-	}
+	}*/
 
 	@Transactional
 	public Term createTerm(Term term) {
@@ -55,8 +59,26 @@ public class TermService {
 		termRepository.deleteById(id);
 		return true;
 	}
-	 public List<Installment> getInstallmentsByTermAndStudent(Term term, Student student) {
-		 return termRepository.findInstallmentsByStudentAndTerm(student, term);
+	 public List<Installment> getInstallmentsByTermAndStudent(Long termId, Long studentId) {
+		 	// Kullanıcıyı bulur
+	        User user = authenticationService.getAuthenticatedUser();
+
+	        // Kullanıcının öğrencilerini alır
+	        List<Student> userStudents = studentService.getStudentsByUserId(user.getId());
+
+	        // Verilen studentId parametresine göre istenen öğrenciyi alır
+	        Student requestedStudent = studentService.getStudentById(studentId);
+
+	        // Eğer istenen öğrenci kullanıcının öğrencileri arasında değilse, hata döndürür
+	        if (!userStudents.contains(requestedStudent)) {
+	            throw new IllegalArgumentException("Requested student is not among the user's students.");
+	        }
+
+	        Optional<Term> optionalTerm = termRepository.findById(termId);
+	        Term term = optionalTerm.orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + termId));
+	        List<Installment> installments = termRepository.findInstallmentsByStudentAndTerm(requestedStudent, term);
+
+	        return installments;
 	}
 	
 }

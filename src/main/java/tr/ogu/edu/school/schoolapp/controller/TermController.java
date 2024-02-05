@@ -1,7 +1,7 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,21 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import tr.ogu.edu.school.schoolapp.dto.TermDto;
 import tr.ogu.edu.school.schoolapp.mapper.TermMapper;
 import tr.ogu.edu.school.schoolapp.model.Installment;
-import tr.ogu.edu.school.schoolapp.model.Payment;
-import tr.ogu.edu.school.schoolapp.model.Student;
-import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.model.Term;
-import tr.ogu.edu.school.schoolapp.service.InstallmentService;
-import tr.ogu.edu.school.schoolapp.service.StudentService;
 import tr.ogu.edu.school.schoolapp.service.TermService;
-import tr.ogu.edu.school.schoolapp.service.UserService;
+import tr.ogu.edu.school.schoolapp.repository.TermRepository;
+
 
 @RestController
 @AllArgsConstructor
@@ -34,12 +29,12 @@ import tr.ogu.edu.school.schoolapp.service.UserService;
 public class TermController {
 
 	private final TermService termService;
-	private final StudentService studentService;
-	private final UserService userService;
+	private final TermRepository termRepository;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<TermDto> getTermById(@PathVariable Long id) {
-		Term term = termService.getTermById(id);
+		Optional<Term> optionalTerm = termRepository.findById(id);
+		Term term = optionalTerm.orElseThrow(() -> new IllegalArgumentException("Term not found with id: " + id));
 		return ResponseEntity.ok(TermMapper.toTermDto(term));
 	}
 
@@ -62,29 +57,15 @@ public class TermController {
 		boolean result = termService.deleteTerm(id);
 		return ResponseEntity.ok(result);
 	}
-	@GetMapping("/terms/{termId}/students/{studentId}/installments")
-	public ResponseEntity<List<Installment>> getInstallmentsByTermAndStudent(
-	        @PathVariable Long termId, @PathVariable Long studentId, @RequestParam String mail) {
-
-	    // Kullanıcıyı maile göre bulur
-	    User user = userService.getUserByMail(mail);
-
-	    // Kullanıcının öğrencilerini alır
-	    List<Student> userStudents = studentService.getStudentsByUserId(user.getId());
-
-	    // Verilen studentId parametresine göre istenen öğrenciyi alır
-	    Student requestedStudent = studentService.getStudentById(studentId);
-
-	    // Eğer istenen öğrenci kullanıcının öğrencileri arasında değilse hata döndür
-	    if (!userStudents.contains(requestedStudent)) {
-	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden
-	    }
-
-	    // Öğrenci kullanıcının öğrencileri arasındaysa, taksitleri getir
-	    Term term = termService.getTermById(termId);
-	    List<Installment> installments = termService.getInstallmentsByTermAndStudent(term, requestedStudent);
-
-	    return ResponseEntity.ok(installments);
-	}
+	@GetMapping("/installments/{termId}/students/{studentId}")
+    public ResponseEntity<List<Installment>> getInstallmentsByTermAndStudent(
+            @PathVariable Long termId, @PathVariable Long studentId) {
+        try {
+            List<Installment> installments = termService.getInstallmentsByTermAndStudent(termId, studentId);
+            return ResponseEntity.ok(installments);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
 }
