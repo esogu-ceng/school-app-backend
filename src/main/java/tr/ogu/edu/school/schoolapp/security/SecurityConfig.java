@@ -31,7 +31,7 @@ public class SecurityConfig {
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
 				.authorizeHttpRequests((authz) -> authz.requestMatchers("/users/login", "/users/**", "/terms/**",
 						"/students/**", "/payments/**", "/installments/**").permitAll().anyRequest().authenticated())
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic();
 //				.and()
 //				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
