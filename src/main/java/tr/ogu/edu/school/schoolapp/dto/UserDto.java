@@ -1,5 +1,7 @@
 package tr.ogu.edu.school.schoolapp.dto;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +15,5 @@ public class UserDto {
 	private String surname;
 	private String mail;
 	private String password;
+	private Set<StudentDto> students;
 }

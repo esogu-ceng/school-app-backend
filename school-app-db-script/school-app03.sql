@@ -1,1 +1,0 @@
-ALTER TABLE enrollments RENAME TO student_term;
