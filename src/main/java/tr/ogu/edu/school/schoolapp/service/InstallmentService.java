@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.Installment;
+import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.InstallmentRepository;
 
 @Service
@@ -14,10 +15,14 @@ import tr.ogu.edu.school.schoolapp.repository.InstallmentRepository;
 public class InstallmentService {
 
 	private final InstallmentRepository installmentRepository;
+	private final AuthenticationService authenticationService;
 
-	public List<Installment> getInstallmentsByUserId(Long userId) {
-		// FIXME: Bu metod, oturum açan kullanıcının gerçek kimliği ile güncellenecek.
-		return installmentRepository.findInstallmentsByUserId(userId);
+	public List<Installment> getInstallmentsByUserId() {
+		User authenticatedUser = authenticationService.getAuthenticatedUser();
+		if (authenticatedUser == null) {
+			throw new IllegalStateException("Oturum açan kullanıcı bulunamadı.");
+		}
+		return installmentRepository.findInstallmentsByUserId(authenticatedUser.getId());
 	}
 
 	@Transactional
