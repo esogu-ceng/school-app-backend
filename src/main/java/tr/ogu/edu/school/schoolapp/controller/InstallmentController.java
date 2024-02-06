@@ -28,7 +28,7 @@ public class InstallmentController {
 
 	@GetMapping("/my-installments")
 	public ResponseEntity<List<InstallmentDto>> getInstallmentsForCurrentUser() {
-		List<Installment> installments = installmentService.getInstallmentsByUserId();
+		List<Installment> installments = installmentService.getCurrentUserInstallments();
 		List<InstallmentDto> installmentDtos = installments.stream().map(InstallmentMapper::toInstallmentDto)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(installmentDtos);

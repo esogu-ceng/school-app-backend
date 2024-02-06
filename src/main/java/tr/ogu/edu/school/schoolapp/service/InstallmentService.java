@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tr.ogu.edu.school.schoolapp.exception.UserNotLoggedInException;
 import tr.ogu.edu.school.schoolapp.model.Installment;
 import tr.ogu.edu.school.schoolapp.model.User;
 import tr.ogu.edu.school.schoolapp.repository.InstallmentRepository;
@@ -17,10 +18,10 @@ public class InstallmentService {
 	private final InstallmentRepository installmentRepository;
 	private final AuthenticationService authenticationService;
 
-	public List<Installment> getInstallmentsByUserId() {
+	public List<Installment> getCurrentUserInstallments() {
 		User authenticatedUser = authenticationService.getAuthenticatedUser();
 		if (authenticatedUser == null) {
-			throw new IllegalStateException("Oturum açan kullanıcı bulunamadı.");
+			throw new UserNotLoggedInException();
 		}
 		return installmentRepository.findInstallmentsByUserId(authenticatedUser.getId());
 	}
