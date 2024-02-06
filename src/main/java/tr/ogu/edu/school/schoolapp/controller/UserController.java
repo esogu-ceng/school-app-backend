@@ -42,7 +42,8 @@ public class UserController {
 	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
 		User user = UserMapper.fromUserDto(userDto);
 		User createdUser = userService.createUser(user);
-		return ResponseEntity.ok(UserMapper.toUserDto(createdUser));
+		UserDto createdUserDto = UserMapper.toUserDto(createdUser);
+		return ResponseEntity.ok(createdUserDto);
 	}
 
 	@PutMapping
