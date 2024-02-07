@@ -1,9 +1,8 @@
 package tr.ogu.edu.school.schoolapp.service;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -18,7 +17,7 @@ public class ActTicketService {
     private final PdfGeneratorService pdfGeneratorService;
 
     @Transactional
-    public void createActTicket(ActTicket actTicket) {
+    public void createActTicket(ActTicket actTicket) throws FileNotFoundException {
 
         if (actTicket != null){
 
@@ -36,7 +35,7 @@ public class ActTicketService {
         }
         else{
             // Bilet yok
-            System.out.println("Bilet null olduğu için kayıt yapılamadı ve PDF üretilemedi.");
+            throw new FileNotFoundException("Bilet bulunamadı");
         }
     }
 
@@ -50,9 +49,5 @@ public class ActTicketService {
         parameters.put("session_hall_id", actTicket.getActSessionHall().getId());
         
         return parameters;
-    }
-
-    public List<ActTicket> getAllActTickets() {
-        return actTicketRepository.findAll();
     }
 }

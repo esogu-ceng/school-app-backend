@@ -1,10 +1,8 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
-import java.util.List;
+import java.io.FileNotFoundException;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +22,8 @@ public class ActTicketController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createActTicket(@RequestBody ActTicket actTicket) {
+    public ResponseEntity<String> createActTicket(@RequestBody ActTicket actTicket) throws FileNotFoundException {
         actTicketService.createActTicket(actTicket);
         return ResponseEntity.ok("Bilet başarıyla oluşturuldu.");
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<ActTicket>> getAllActTickets() {
-        List<ActTicket> allTickets = actTicketService.getAllActTickets();
-        return ResponseEntity.ok(allTickets);
     }
 }
