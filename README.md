@@ -48,17 +48,18 @@ To create the PostgreSQL database:
  1.Open a SQL client tool.
  2.Connect to your PostgreSQL database server.
  3.Execute the following SQL command to create the school_app database:
-   ###### CREATE DATABASE school_app;
+   **CREATE DATABASE school_app;**
 
 ### Importing Dummy Data into PostgreSQL
 
-After creating the database with the scripts from school-app-db-script, to import dummy data:
+Once the database has been created using the scripts from the school-app-db-script folder, you can observe how the project operates with mock data by executing the dummy_data.sql script. This script populates your database with sample data, providing a realistic preview of the application's functionality. To import this dummy data, follow these steps:
 
-1. Open a SQL client tool.
-2. Connect to your PostgreSQL database server.
-3. Open the **school-app** database.
-4. Open the `dummy_data.sql` file located in the project's root directory.
-5. Execute the SQL statements in the `dummy_data.sql` file to populate the database with dummy data.
+   1.Open a SQL client tool.
+   2.Connect to your PostgreSQL database server.
+   3.Select the school-app database.
+   4.Locate and open the dummy_data.sql file from the project's school-app-db-script folder.
+   5.Execute the SQL statements within the dummy_data.sql file to populate the database with dummy data.
+By following these instructions, you can quickly set up your environment to reflect a working state of the application, making it easier to test functionalities, debug, and demonstrate features without the need to manually enter data.
 
 ### Running the Application
 
