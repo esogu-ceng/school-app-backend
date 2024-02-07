@@ -1,4 +1,4 @@
-# school-app
+# School-App
 
 This project contains a Java application that performs school-app functions.
 
@@ -43,9 +43,16 @@ To use the PostgreSQL database server, follow these steps:
 2. Update your database connection information according to your PostgreSQL server (e.g., URL, username, password, etc.).
 3. Save the changes.
 
+### Creating the PostgreSQL Database
+To create the PostgreSQL database:
+ 1.Open a SQL client tool.
+ 2.Connect to your PostgreSQL database server.
+ 3.Execute the following SQL command to create the school_app database:
+   ###### CREATE DATABASE school_app;
+
 ### Importing Dummy Data into PostgreSQL
 
-To import dummy data into the PostgreSQL database, follow these steps:
+After creating the database with the scripts from school-app-db-script, to import dummy data:
 
 1. Open a SQL client tool.
 2. Connect to your PostgreSQL database server.
