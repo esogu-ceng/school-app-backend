@@ -10,6 +10,18 @@ Make sure you have the following software installed on your computer before proc
 - PostgreSQL database server
 - Eclipse IDE
 
+- About PostgreSQL Installation:
+During the installation you may get following error:
+
+"Problem running post-install step. Installation may not complete correctly
+The database cluster initialisation failed."
+
+To install PostgreSQL without any error, do the following:
+1. If you have a 3rd party Antivirus Software, pause it's protection temporarily.
+2. During installation, when it asks you for language, select "English - United States".
+
+The installation should be complete without any error.
+
 ## Steps
 
 ### Importing the Project
