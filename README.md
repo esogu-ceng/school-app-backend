@@ -55,6 +55,13 @@ To use the PostgreSQL database server, follow these steps:
 2. Update your database connection information according to your PostgreSQL server (e.g., URL, username, password, etc.).
 3. Save the changes.
 
+- Note that these database connection information is only for you. To keep changes for a specific file only in local and not track them
+without adding it into gitignore file, use following command on git bash:
+
+```git update-index --assume-unchanged path/to/application.properties```
+
+The path of it is most likely : `src/main/resources/application.properties`
+
 ### Creating the PostgreSQL Database
 To create the PostgreSQL database:
  1.Open a SQL client tool.
