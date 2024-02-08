@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TicketRequiredException extends ServiceException{
     private static final long serialVersionUID = 1L;
 
-	private static String message = "Rapor şablon dosyası bulunamadı";
+	private static String message = "Bilet dosyası bulunamadı";
 
     public TicketRequiredException() {
 		super(message);
