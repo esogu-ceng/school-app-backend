@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,9 +28,10 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
-				.authorizeHttpRequests((authz) -> authz.requestMatchers("/users/login", "/users/**", "/terms/**",
-						"/students/**", "/payments/**", "/installments/**").permitAll().anyRequest().authenticated())
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.authorizeHttpRequests(
+						(authz) -> authz.requestMatchers("/users/login")
+								.permitAll().anyRequest().authenticated())
+				.formLogin(formLogin -> formLogin.loginProcessingUrl("/login").defaultSuccessUrl("/index.html"));
 //				.and()
 //				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

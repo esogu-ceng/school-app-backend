@@ -50,7 +50,7 @@ public class TermServiceTest {
         Student student = new Student();
         student.setId(studentId);
         userStudents.add(student);
-        Mockito.when(studentService.getStudentsByUserId(user.getId())).thenReturn(userStudents);
+        Mockito.when(studentService.getMyStudents()).thenReturn(userStudents);
 
         // Mock requested student
         Student requestedStudent = new Student();
@@ -87,7 +87,7 @@ public class TermServiceTest {
         Student student = new Student();
         student.setId(2L); // Different student ID
         userStudents.add(student);
-        Mockito.when(studentService.getStudentsByUserId(user.getId())).thenReturn(userStudents);
+        Mockito.when(studentService.getMyStudents()).thenReturn(userStudents);
 
         // Mock requested student
         Student requestedStudent = new Student();

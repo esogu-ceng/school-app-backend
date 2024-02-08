@@ -60,11 +60,8 @@ public class TermService {
 		return true;
 	}
 	 public List<Installment> getInstallmentsByTermAndStudent(Long termId, Long studentId) {
-		 	// Kullanıcıyı bulur
-	        User user = authenticationService.getAuthenticatedUser();
-
 	        // Kullanıcının öğrencilerini alır
-	        List<Student> userStudents = studentService.getStudentsByUserId(user.getId());
+	        List<Student> userStudents = studentService.getMyStudents();
 
 	        // Verilen studentId parametresine göre istenen öğrenciyi alır
 	        Student requestedStudent = studentService.getStudentById(studentId);
