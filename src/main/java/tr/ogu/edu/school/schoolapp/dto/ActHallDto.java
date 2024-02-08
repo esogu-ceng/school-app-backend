@@ -5,10 +5,6 @@ import java.util.List;
 
 import lombok.Data;
 
-/**
- * The persistent class for the act_hall database table.
- * 
- */
 @Data
 public class ActHallDto implements Serializable {
 	private static final long serialVersionUID = 1L;

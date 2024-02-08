@@ -3,11 +3,12 @@ package tr.ogu.edu.school.schoolapp.mapper;
 import tr.ogu.edu.school.schoolapp.dto.ActSessionInfoDto;
 import tr.ogu.edu.school.schoolapp.model.ActSessionInfo;
 
-public class ActSessionInfoMapper {
-	private ActSessionInfoMapper() {
-	}
+public final class ActSessionInfoMapper extends DtoEntityMapper<ActSessionInfo, ActSessionInfoDto> {
 
-	public static ActSessionInfoDto toActSessionInfoDto(ActSessionInfo actSessionInfo) {
+	public static final ActSessionInfoMapper INSTANCE = new ActSessionInfoMapper();
+
+	@Override
+	public ActSessionInfoDto toDto(ActSessionInfo actSessionInfo) {
 		ActSessionInfoDto dto = new ActSessionInfoDto();
 		dto.setId(actSessionInfo.getId());
 		dto.setActivityDate(actSessionInfo.getActivityDate());
@@ -16,12 +17,14 @@ public class ActSessionInfoMapper {
 		return dto;
 	}
 
-	public static ActSessionInfo fromActSessionInfoDto(ActSessionInfo dto) {
-		ActSessionInfo actSessionInfo = new ActSessionInfo();
-		actSessionInfo.setId(dto.getId());
-		actSessionInfo.setActivityDate(dto.getActivityDate());
-		actSessionInfo.setActivityName(dto.getActivityName());
-		actSessionInfo.setFee(dto.getFee());
-		return actSessionInfo;
+	@Override
+	public ActSessionInfo toEntity(ActSessionInfoDto dto) {
+		ActSessionInfo entity = new ActSessionInfo();
+		entity.setId(dto.getId());
+		entity.setActivityDate(dto.getActivityDate());
+		entity.setActivityName(dto.getActivityName());
+		entity.setFee(dto.getFee());
+		return entity;
 	}
+
 }

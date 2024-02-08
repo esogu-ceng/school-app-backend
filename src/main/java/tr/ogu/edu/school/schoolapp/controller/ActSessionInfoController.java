@@ -1,7 +1,6 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +22,8 @@ public class ActSessionInfoController {
 
 	@GetMapping
 	public ResponseEntity<List<ActSessionInfoDto>> getActivities() {
-
 		List<ActSessionInfo> activities = actSessionInfoService.getActivities();
-		List<ActSessionInfoDto> activityDtos = activities.stream().map(ActSessionInfoMapper::toActSessionInfoDto)
-				.collect(Collectors.toList());
+		List<ActSessionInfoDto> activityDtos = ActSessionInfoMapper.INSTANCE.toDtoList(activities);
 		return ResponseEntity.ok(activityDtos);
 	}
 
