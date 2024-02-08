@@ -28,10 +28,7 @@ public class InstallmentController {
 
 	@GetMapping("/my-installments")
 	public ResponseEntity<List<InstallmentDto>> getInstallmentsForCurrentUser() {
-		// FIXME: Oturum açan kullanıcının bilgilerini Spring Security üzerinden alacak
-		// şekilde güncellenmeli.
-		Long userId = 1L; // Bu kısım, oturum açan kullanıcının kimliğiyle değiştirilmeli.
-		List<Installment> installments = installmentService.getInstallmentsByUserId(userId);
+		List<Installment> installments = installmentService.getCurrentUserInstallments();
 		List<InstallmentDto> installmentDtos = installments.stream().map(InstallmentMapper::toInstallmentDto)
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(installmentDtos);
