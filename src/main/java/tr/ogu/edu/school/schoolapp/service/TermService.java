@@ -25,14 +25,6 @@ public class TermService {
 	private final StudentService studentService;
 	private final UserService userService;
 
-	/*public Term getTermById(Long id) {
-		// FIXME sadece kendi öğrencilerine ait dönem için kullanıcı idsi oturum açan
-		// kullanıcıdan alınarak sorguya eklenmeli.
-		// yani findByIDAndUserId gibi bir metot repositorye eklenmeli ve çağrılmalı.
-		Term term = termRepository.findById(id)
-		return term;
-	}*/
-
 	@Transactional
 	public Term createTerm(Term term) {
 		term = termRepository.save(term);
