@@ -14,7 +14,7 @@ import tr.ogu.edu.school.schoolapp.service.ActTicketService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/act-tickets")
+@RequestMapping(value = "/act-tickets")
 public class ActTicketController {
     private final ActTicketService actTicketService;
 
