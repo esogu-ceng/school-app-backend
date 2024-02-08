@@ -8,18 +8,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import tr.ogu.edu.school.schoolapp.model.ActTicket;
 import tr.ogu.edu.school.schoolapp.service.ActTicketService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/act-tickets")
 public class ActTicketController {
     private final ActTicketService actTicketService;
-
-    // Constructor
-    public ActTicketController(ActTicketService actTicketService) {
-        this.actTicketService = actTicketService;
-    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createActTicket(@RequestBody ActTicket actTicket) throws FileNotFoundException {

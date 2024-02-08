@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import tr.ogu.edu.school.schoolapp.exception.FileNotCreatedException;
+import tr.ogu.edu.school.schoolapp.exception.TicketRequiredException;
 import tr.ogu.edu.school.schoolapp.model.ActTicket;
 import tr.ogu.edu.school.schoolapp.repository.ActTicketRepository;
 
@@ -19,23 +21,20 @@ public class ActTicketService {
     @Transactional
     public void createActTicket(ActTicket actTicket) throws FileNotFoundException {
 
-        if (actTicket != null){
+        // ActTicket objesinden gerekli parametreleri alıyoruz
+        Map<String, Object> parameters = preparePdfParameters(actTicket); 
 
-            // ActTicket objesinden gerekli parametreleri alıyoruz
-            Map<String, Object> parameters = preparePdfParameters(actTicket); 
+        // FIXME Daha sonra veritabanından çekilmeli
+        String templatePath = "jasper-report-templates/ticket.jrxml"; // Şablon dosyasının bulunduğu yer
 
-            // FIXME Daha sonra veritabanından çekilmeli
-            String templatePath = "jasper-report-templates/ticket.jrxml"; // Şablon dosyasının bulunduğu yer
-
-            // PDF üretme metodunu çağırıyoruz
+        // PDF üretme metodunu çağırıyoruz
+        try {
             String pdfFilePath = pdfGeneratorService.generatePdf(actTicket.getVerificationCode(), parameters, templatePath);
             actTicket.setFilepath(pdfFilePath); 
             actTicketRepository.save(actTicket);    // Kayıt yapılıyor
-
-        }
-        else{
-            // Bilet yok
-            throw new FileNotFoundException("Bilet bulunamadı");
+        } catch (FileNotCreatedException e) {
+            // Rapor şablonu dosyası bulunamadı hatasını TicketRequiredException olarak yeniden fırlat
+            throw new TicketRequiredException(e);
         }
     }
 
