@@ -10,7 +10,9 @@ Make sure you have the following software installed on your computer before proc
 - PostgreSQL database server
 - Eclipse IDE
 
-- About PostgreSQL Installation:
+## Steps
+
+### Install PostgreSQL Database Server:
 During the installation you may get following error:
 
 "Problem running post-install step. Installation may not complete correctly
@@ -21,59 +23,6 @@ To install PostgreSQL without any error, do the following:
 2. During installation, when it asks you for language, select "English - United States".
 
 The installation should be complete without any error.
-
-### Spring Tools 4 (Spring Tool Suite 4) 
-To ensure that you have Spring Tools 4 (Spring Tool Suite 4) installed in your Eclipse IDE, do the following:
-
-1. Open Eclipse IDE.
-2. Select the **Help** menu and click on **Eclipse Marketplace**.
-3. In the window opened, choose **Installed** tab to list solutions that are installed in your IDE.
-4. If there is **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x.RELEASE**, you have Spring Tools 4 installed in your IDE.
-If not, do following:
-	- Choose **Search** tab in Eclipse Marketplace window.
-	- Search for **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x RELEASE
-	- Follow the installation steps.
-
-## Steps
-
-### Importing the Project
-
-1. Open Eclipse IDE.
-2. Select the **File** menu and choose the **Import** option.
-3. In the opened window, select **Existing Maven Projects** and click **Next**.
-4. Specify the directory where the project is located (Root Directory) and click **Finish**.
-5. Eclipse will import the Maven project and add it to the project explorer.
-
-### Lombok Installation
-
-1. Ensure that Lombok is installed in your IDE.
-2. If Lombok is not installed, follow these steps:
-   - Close your IDE.
-   - Add the Lombok library to your IDE.
-   - Start your IDE.
-
-### Loading Dependencies and Building the Project
-
-After importing the project, Eclipse will automatically load the dependencies using Maven. This process may take some time and runs in the background. To compile your Maven project, follow these steps:
-
-1. Right-click on the project and select **Run As** from the context menu, then click on **Maven Install**.
-2. When the Maven project build process is complete, you will see a successful message in the console.
-
-### PostgreSQL Integration
-
-To use the PostgreSQL database server, follow these steps:
-
-1. Open the `application.properties` file located under `src/main/resources`.
-2. Update your database connection information according to your PostgreSQL server (e.g., URL, username, password, etc.).
-3. Save the changes.
-
-- Note that these database connection information is only for you. To keep changes for a specific file only in local and not track them
-without adding it into gitignore file, use following command on git bash:
-
-```bash
-git update-index --assume-unchanged path/to/application.properties```
-
-The path of it is most likely : `src/main/resources/application.properties`
 
 ### Creating the PostgreSQL Database
 To create the PostgreSQL database:
@@ -92,6 +41,57 @@ Once the database has been created using the scripts from the school-app-db-scri
 4. Locate and open the dummy_data.sql file from the project's school-app-db-script folder.
 5. Execute the SQL statements within the **dummy_data.sql** file to populate the database with dummy data.
 By following these instructions, you can quickly set up your environment to reflect a working state of the application, making it easier to test functionalities, debug, and demonstrate features without the need to manually enter data.
+
+### (Optional) Spring Tools 4 (Spring Tool Suite 4) 
+To know that you have Spring Tools 4 (Spring Tool Suite 4) installed in your Eclipse IDE, do the following:
+
+1. Open Eclipse IDE.
+2. Select the **Help** menu and click on **Eclipse Marketplace**.
+3. In the window opened, choose **Installed** tab to list solutions that are installed in your IDE.
+4. If there is **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x.RELEASE**, you have Spring Tools 4 installed in your IDE.
+If not, do following:
+	- Choose **Search** tab in Eclipse Marketplace window.
+	- Search for **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x RELEASE
+	- Follow the installation steps.
+
+### Lombok Installation
+
+1. Ensure that Lombok is installed in your IDE.
+2. If Lombok is not installed, follow these steps:
+   - Close your IDE.
+   - Add the Lombok library to your IDE.
+   - Start your IDE.
+
+### Importing the Project
+
+1. Open Eclipse IDE.
+2. Select the **File** menu and choose the **Import** option.
+3. In the opened window, select **Existing Maven Projects** and click **Next**.
+4. Specify the directory where the project is located (Root Directory) and click **Finish**.
+5. Eclipse will import the Maven project and add it to the project explorer.
+
+### PostgreSQL Integration
+
+To use the PostgreSQL database server, follow these steps:
+
+1. Open the `application-dev.properties` file located under `src/main/resources`.
+2. Update your database connection information according to your PostgreSQL server (e.g., URL, username, password, etc.).
+3. Save the changes.
+
+- Note that these database connection information is only for you. To keep changes for a specific file only in local and not track them
+without adding it into gitignore file, use following command on git bash:
+
+```bash
+git update-index --assume-unchanged path/to/application-dev.properties```
+
+The path of it is most likely : `src/main/resources/application-dev.properties`
+
+### Loading Dependencies and Building the Project
+
+After importing the project, Eclipse will automatically load the dependencies using Maven. This process may take some time and runs in the background. To compile your Maven project, follow these steps:
+
+1. Right-click on the project and select **Run As** from the context menu, then click on **Maven Install**.
+2. When the Maven project build process is complete, you will see a successful message in the console.
 
 ### Running the Application
 
