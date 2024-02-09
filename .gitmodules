@@ -1,0 +1,3 @@
+[submodule "school-app-mobile"]
+	path = school-app-mobile
+	url = https://github.com/esogu-ceng/school-app-mobile.git
