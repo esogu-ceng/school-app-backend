@@ -22,6 +22,18 @@ To install PostgreSQL without any error, do the following:
 
 The installation should be complete without any error.
 
+### Spring Tools 4 (Spring Tool Suite 4) 
+To ensure that you have Spring Tools 4 (Spring Tool Suite 4) installed in your Eclipse IDE, do the following:
+
+1. Open Eclipse IDE.
+2. Select the **Help** menu and click on **Eclipse Marketplace**.
+3. In the window opened, choose **Installed** tab to list solutions that are installed in your IDE.
+4. If there is **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x.RELEASE**, you have Spring Tools 4 installed in your IDE.
+If not, do following:
+	- Choose **Search** tab in Eclipse Marketplace window.
+	- Search for **Spring Tools 4 (aka Spring Tool Suite 4) 4.x.x RELEASE
+	- Follow the installation steps.
+
 ## Steps
 
 ### Importing the Project
@@ -58,7 +70,8 @@ To use the PostgreSQL database server, follow these steps:
 - Note that these database connection information is only for you. To keep changes for a specific file only in local and not track them
 without adding it into gitignore file, use following command on git bash:
 
-```git update-index --assume-unchanged path/to/application.properties```
+```bash
+git update-index --assume-unchanged path/to/application.properties```
 
 The path of it is most likely : `src/main/resources/application.properties`
 
