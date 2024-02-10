@@ -32,7 +32,7 @@ public class ActTicketController {
     }
 
     // Bileti çekmemizi sağlayan endpoint
-    @GetMapping("/ticket/{verificationCode}")
+    @GetMapping("/public/{verificationCode}")
     public ResponseEntity<Resource> getTicketPdf(@PathVariable String verificationCode) throws IOException {
         try {
             Resource resource = actTicketService.getTicketPdfResource(verificationCode);    // Dosya kaynağını almak için
