@@ -1,8 +1,8 @@
 package tr.ogu.edu.school.schoolapp.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The persistent class for the term database table.
@@ -21,6 +22,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@NoArgsConstructor
 public class Term implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +34,7 @@ public class Term implements Serializable {
 	@Column(name = "end_date")
 	private Date endDate;
 
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
 	private Date startDate;
@@ -46,12 +49,12 @@ public class Term implements Serializable {
 	// bi-directional many-to-many association to Student
 	@ManyToMany(mappedBy = "terms")
 	private List<Student> students;
-
-	public Installment addInstallment(Installment installment) {
-		getInstallments().add(installment);
-		installment.setTerm(this);
-
-		return installment;
+	public Term(String termName, Date startDate, Date endDate, List<Student> students) {
+		this.termName = termName;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.students = students;
+		
 	}
 
 	public Installment removeInstallment(Installment installment) {
@@ -60,5 +63,11 @@ public class Term implements Serializable {
 
 		return installment;
 	}
+	public Installment addInstallment(Installment installment) {
+		getInstallments().add(installment);
+		installment.setTerm(this);
 
+		return installment;
+
+}
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The persistent class for the student database table.
@@ -19,6 +20,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@NoArgsConstructor
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -66,6 +68,14 @@ public class Student implements Serializable {
 		installment.setStudent(null);
 
 		return installment;
+	}
+	public Student(String name, String surname, Integer grade, List<Installment> installments, List<Term> terms, List<User> users) {
+	    this.name = name;
+	    this.surname = surname;
+	    this.grade = grade;
+	    this.installments = installments;
+	    this.terms = terms;
+	    this.users = users;
 	}
 
 }

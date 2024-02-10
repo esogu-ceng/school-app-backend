@@ -63,4 +63,9 @@ public class StudentService {
 		studentRepository.deleteById(id);
 		return true;
 	}
+
+	public Student getStudentById(Long studentId) {
+	    return studentRepository.findById(studentId).orElse(null);
+	}
+
 }
