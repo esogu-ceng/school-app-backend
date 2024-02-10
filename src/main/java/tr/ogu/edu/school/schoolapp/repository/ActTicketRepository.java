@@ -7,4 +7,5 @@ import tr.ogu.edu.school.schoolapp.model.ActTicket;
 
 @Repository
 public interface ActTicketRepository extends JpaRepository<ActTicket, Long>{
+    ActTicket findByVerificationCode(String verificationCode);
 }

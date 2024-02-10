@@ -3,6 +3,9 @@ package tr.ogu.edu.school.schoolapp.service;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -48,5 +51,11 @@ public class ActTicketService {
         parameters.put("session_hall_id", actTicket.getActSessionHall().getId());
         
         return parameters;
+    }
+
+    // Pdf kaynağını alma metodu
+    public Resource getTicketPdfResource(String verificationCode) {
+        String filePath = actTicketRepository.findByVerificationCode(verificationCode).getFilepath();
+        return new ClassPathResource(filePath);     // Dosya erişimi için kullanılıyor
     }
 }
