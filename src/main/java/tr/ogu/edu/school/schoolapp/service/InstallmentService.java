@@ -1,5 +1,6 @@
 package tr.ogu.edu.school.schoolapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -65,4 +66,13 @@ public class InstallmentService {
 	public void deleteInstallment(Long id) {
 		installmentRepository.deleteById(id);
 	}
+	
+	public List<Installment> getPaidInstallments() {
+        return installmentRepository.findPaidInstallments();
+    }
+
+    public List<Installment> getUnpaidInstallments() {
+        return installmentRepository.findUnpaidInstallments();
+
+    }
 }

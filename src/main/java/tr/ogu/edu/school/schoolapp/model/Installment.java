@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The persistent class for the installment database table.
@@ -19,6 +20,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+@NoArgsConstructor
 public class Installment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -36,12 +38,19 @@ public class Installment implements Serializable {
 	@ManyToOne
 	private Payment payment;
 
-	// bi-directional many-to-one association to Student
+   // bi-directional many-to-one association to Student
 	@ManyToOne
 	private Student student;
-
+	
 	// bi-directional many-to-one association to Term
 	@ManyToOne
 	private Term term;
 
+	public Installment(Double amount,Date dueDate, Term term, Student student, Payment payment) {
+		this.amount = amount;
+		this.dueDate = dueDate;
+		this.term = term;
+		this.student = student;
+		this.payment = payment;
+	}
 }
