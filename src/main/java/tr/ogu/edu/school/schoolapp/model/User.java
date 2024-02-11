@@ -43,7 +43,7 @@ public class User implements Serializable {
 
 	// bi-directional many-to-one association to ActSessionHall
 	@OneToMany(mappedBy = "user")
-	private List<ActSessionHall> actSessionHalls;
+	private List<ActSessionHallSeat> actSessionHalls;
 
 	// bi-directional many-to-one association to ActTicket
 	@OneToMany(mappedBy = "user")
@@ -53,14 +53,14 @@ public class User implements Serializable {
 	@ManyToMany(mappedBy = "users")
 	private List<Student> students;
 
-	public ActSessionHall addActSessionHall(ActSessionHall actSessionHall) {
+	public ActSessionHallSeat addActSessionHall(ActSessionHallSeat actSessionHall) {
 		getActSessionHalls().add(actSessionHall);
 		actSessionHall.setUser(this);
 
 		return actSessionHall;
 	}
 
-	public ActSessionHall removeActSessionHall(ActSessionHall actSessionHall) {
+	public ActSessionHallSeat removeActSessionHall(ActSessionHallSeat actSessionHall) {
 		getActSessionHalls().remove(actSessionHall);
 		actSessionHall.setUser(null);
 

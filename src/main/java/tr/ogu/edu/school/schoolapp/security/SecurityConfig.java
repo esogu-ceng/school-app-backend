@@ -27,10 +27,8 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
-				.authorizeHttpRequests(
-						(authz) -> authz.requestMatchers("/users/login")
-								.permitAll().anyRequest().authenticated())
+		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and().authorizeHttpRequests(
+				(authz) -> authz.requestMatchers("/users/login", "*/public/*").permitAll().anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin.loginProcessingUrl("/login").defaultSuccessUrl("/index.html"));
 //				.and()
 //				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

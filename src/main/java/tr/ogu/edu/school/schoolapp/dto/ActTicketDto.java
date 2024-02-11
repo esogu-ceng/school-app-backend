@@ -19,7 +19,7 @@ public class ActTicketDto implements Serializable {
 
 	private String verificationCode;
 
-	private ActSessionHallDto actSessionHall;
+	private ActSessionHallSeatDto actSessionHall;
 
 	private UserDto user;
 

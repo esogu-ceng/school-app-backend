@@ -5,16 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import tr.ogu.edu.school.schoolapp.model.ActSessionHall;
-import tr.ogu.edu.school.schoolapp.repository.ActSessionHallRepository;
+import tr.ogu.edu.school.schoolapp.model.ActSessionHallSeat;
+import tr.ogu.edu.school.schoolapp.repository.ActSessionHallSeatRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ActSessionHallService {
 
-	private final ActSessionHallRepository actSessionHallRepository;
+	private final ActSessionHallSeatRepository actSessionHallRepository;
 
-	public List<ActSessionHall> getSeatsByHallId(Long sessionId) {
+	public List<ActSessionHallSeat> getSeatsByHallId(Long sessionId) {
 		return actSessionHallRepository.findAllByActSessionInfoId(sessionId);
 	}
 

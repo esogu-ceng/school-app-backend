@@ -42,21 +42,21 @@ public class ActSessionInfo implements Serializable {
 
 	// bi-directional many-to-one association to ActSessionHall
 	@OneToMany(mappedBy = "actSessionInfo")
-	private List<ActSessionHall> actSessionHalls;
+	private List<ActSessionHallSeat> actSessionHalls;
 
 	// bi-directional many-to-one association to ActHall
 	@ManyToOne
 	@JoinColumn(name = "hall_id")
 	private ActHall actHall;
 
-	public ActSessionHall addActSessionHall(ActSessionHall actSessionHall) {
+	public ActSessionHallSeat addActSessionHall(ActSessionHallSeat actSessionHall) {
 		getActSessionHalls().add(actSessionHall);
 		actSessionHall.setActSessionInfo(this);
 
 		return actSessionHall;
 	}
 
-	public ActSessionHall removeActSessionHall(ActSessionHall actSessionHall) {
+	public ActSessionHallSeat removeActSessionHall(ActSessionHallSeat actSessionHall) {
 		getActSessionHalls().remove(actSessionHall);
 		actSessionHall.setActSessionInfo(null);
 

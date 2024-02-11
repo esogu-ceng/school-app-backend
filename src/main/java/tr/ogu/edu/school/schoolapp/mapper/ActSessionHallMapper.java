@@ -1,15 +1,15 @@
 package tr.ogu.edu.school.schoolapp.mapper;
 
-import tr.ogu.edu.school.schoolapp.dto.ActSessionHallDto;
-import tr.ogu.edu.school.schoolapp.model.ActSessionHall;
+import tr.ogu.edu.school.schoolapp.dto.ActSessionHallSeatDto;
+import tr.ogu.edu.school.schoolapp.model.ActSessionHallSeat;
 
-public class ActSessionHallMapper extends DtoEntityMapper<ActSessionHall, ActSessionHallDto> {
+public class ActSessionHallMapper extends DtoEntityMapper<ActSessionHallSeat, ActSessionHallSeatDto> {
 
 	public static final ActSessionHallMapper INSTANCE = new ActSessionHallMapper();
 
 	@Override
-	public ActSessionHallDto toDto(ActSessionHall entity) {
-		ActSessionHallDto dto = new ActSessionHallDto();
+	public ActSessionHallSeatDto toDto(ActSessionHallSeat entity) {
+		ActSessionHallSeatDto dto = new ActSessionHallSeatDto();
 		dto.setId(entity.getId());
 		dto.setBlockedTime(entity.getBlockedTime());
 		dto.setStatus(entity.getStatus());
@@ -18,8 +18,8 @@ public class ActSessionHallMapper extends DtoEntityMapper<ActSessionHall, ActSes
 	}
 
 	@Override
-	public ActSessionHall toEntity(ActSessionHallDto dto) {
-		ActSessionHall entity = new ActSessionHall();
+	public ActSessionHallSeat toEntity(ActSessionHallSeatDto dto) {
+		ActSessionHallSeat entity = new ActSessionHallSeat();
 		entity.setId(dto.getId());
 		entity.setBlockedTime(dto.getBlockedTime());
 		entity.setStatus(dto.getStatus());

@@ -18,7 +18,7 @@ public class ActSessionInfoDto implements Serializable {
 
 	private double fee;
 
-	private List<ActSessionHallDto> actSessionHalls;
+	private List<ActSessionHallSeatDto> actSessionHalls;
 
 	private ActHallDto actHall;
 
