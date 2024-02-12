@@ -16,6 +16,7 @@ public class AuthenticationService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	public static User devUser = null;
 
 	public User authenticateUser(String mail, String password) {
 		User user = userRepository.findByMail(mail);
@@ -26,6 +27,9 @@ public class AuthenticationService {
 	}
 
 	public User getAuthenticatedUser() {
+		if (devUser != null) {
+			return devUser;
+		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String username = ((UserDetails) authentication.getPrincipal()).getUsername();

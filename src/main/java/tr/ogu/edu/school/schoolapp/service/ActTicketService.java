@@ -3,6 +3,7 @@ package tr.ogu.edu.school.schoolapp.service;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ActTicketService {
 	private final ActSessionHallSeatRepository actSessionHallSeatRepository;
 
 	@Transactional
-	public void createActTicket(ActTicket actTicket) {
+	public String createActTicket(ActTicket actTicket, String email) {
 
 		// FIXME Daha sonra veritabanından çekilmeli
 		String templatePath = "jasper-report-templates/ticket.jrxml"; // Şablon dosyasının bulunduğu yer
@@ -61,17 +62,18 @@ public class ActTicketService {
 			actTicket.setFilepath(pdfFilePath);
 			actSessionHallSeatRepository.save(actTicket.getActSessionHallSeat());
 			actTicketRepository.save(actTicket); // Kayıt yapılıyor
-			sendTicketEmailtoUser(actTicket, user.getMail());
+			String ticketUrl = sendTicketEmailtoUser(actTicket, email);
 			log.info("Koltuk: {}-{} Kullanıcı: {} için bilet oluşturuldu",
 					actTicket.getActSessionHallSeat().getActSeat().getLine(),
 					actTicket.getActSessionHallSeat().getActSeat().getNo(), user.getMail());
+			return ticketUrl;
 		} catch (Exception e) {
 			log.error("Bilet oluşturulamadı", e);
 			throw new TicketRequiredException(e);
 		}
 	}
 
-	private void sendTicketEmailtoUser(ActTicket actTicket, String mail) {
+	private String sendTicketEmailtoUser(ActTicket actTicket, String mail) {
 		String mailContent = settingRepository.getMailContent().getValue();
 		String ticketUrl = "http://app.bbomeskisehir.com:8080/tickets/public/" + actTicket.getVerificationCode() + "/"
 				+ actTicket.getActSessionHallSeat().getActSeat().getLine() + "/"
@@ -80,6 +82,7 @@ public class ActTicketService {
 		mailService.sendMailWithAttachment(actTicket.getUser().getMail(), "Biletiniz Burada :)", mailContent,
 				actTicket.getFilepath(), Arrays.asList(Pair.with("logo.png", "jasper-report-templates/icon.png"),
 						Pair.with("instagram.png", "jasper-report-templates/instagram.png")));
+		return ticketUrl;
 	}
 
 	// Parametreleri birlikte almak için
@@ -110,14 +113,16 @@ public class ActTicketService {
 	}
 
 	@Transactional
-	public void createTickets(int count, int activityId) {
+	public List<String> createTickets(int count, int activityId, String email) {
 		List<ActSessionHallSeat> availableSeats = actSessionHallSeatRepository
 				.findAllByStatusOrderByIdAsc(SeatStatus.AVAILABLE, PageRequest.of(0, count));
+		List<String> ticketUrls = new ArrayList<>();
 		for (ActSessionHallSeat actSessionHallSeat : availableSeats) {
 			actSessionHallSeat.setStatus(SeatStatus.BLOCKED);
 			ActTicket actTicket = new ActTicket();
 			actTicket.setActSessionHallSeat(actSessionHallSeat);
-			createActTicket(actTicket);
+			String ticketUrl = createActTicket(actTicket, email);
+			ticketUrls.add(ticketUrl);
 		}
 		try {
 			Thread.sleep(5000L);
@@ -125,5 +130,6 @@ public class ActTicketService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return ticketUrls;
 	}
 }
