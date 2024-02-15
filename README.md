@@ -8,11 +8,23 @@ Make sure you have the following software installed on your computer before proc
 
 - Java Development Kit (JDK)
 - PostgreSQL database server
+- pgAdmin 4*
 - Eclipse IDE
+
+Note: You can use an alternative SQL client tool instead of pgAdmin 4 if you prefer.
 
 ## Steps
 
+### Install Java Development Kit (JDK)
+
+Download [Java SE Development Kit 17.0.10](1) that suits your operating system.
+`[1]:https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html`
+
 ### Install PostgreSQL Database Server:
+
+Download [PostgreSQL Database Server](2) version 16.2 or newer.
+`[2]:https://www.postgresql.org/download/windows/`
+
 During the installation you may get following error:
 
 "Problem running post-install step. Installation may not complete correctly
@@ -24,12 +36,30 @@ To install PostgreSQL without any error, do the following:
 
 The installation should be complete without any error.
 
+### Install pgAdmin 4 
+
+Download [pgAdmin 4](3). There are several latest releases of pgAdmin 4 versions listed there. You may download one you like.
+`[3]:https://www.pgadmin.org/download/pgadmin-4-windows/`
+
 ### Creating the PostgreSQL Database
 To create the PostgreSQL database:
  1.Open a SQL client tool.
  2.Connect to your PostgreSQL database server.
  3.Execute the following SQL command to create the school_app database:
    **CREATE DATABASE school_app;**
+
+### Running Database Scripts
+
+After you create the database, you need to run the database scripts which you will find in `school-app-db-script` folder.
+
+1. Open a SQL client tool.
+2. Connect to your PostgreSQL database server.
+3. Select the school-app database.
+4. Open and execute the script files in SQL client tool as following:
+	- First run `create_script.sql`.
+	- Then run the following scripts in respective order to their filenames.
+
+e.g.: 1. create_script.sql  2. school-app01.sql  3. school-app02.sql ...
 
 ### Importing Dummy Data into PostgreSQL
 
@@ -84,6 +114,15 @@ To use the PostgreSQL database server, follow these steps:
 git update-index --assume-unchanged path/to/application-dev.properties```
 
 The path of it is most likely : `src/main/resources/application-dev.properties`
+
+### Setting Run Configurations
+
+For Spring Boot application to read `application-dev.properties` before running, you need to add an argument
+following these steps:
+
+1. Select **Run** and choose the **Run Configurations** option.
+2. In the opened window on top middle, open **Arguments** tab.
+3. Add `--spring.profiles.active=dev` into **Program Arguments**.
 
 ### Loading Dependencies and Building the Project
 
