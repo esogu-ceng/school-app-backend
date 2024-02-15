@@ -107,8 +107,8 @@ To use the PostgreSQL database server, follow these steps:
 
 - Note that these database connection information is only for you. To keep changes for a specific file only in local use following command on git bash:
 
-```bash
-git update-index --assume-unchanged path/to/application-dev.properties```
+
+`git update-index --assume-unchanged path/to/application-dev.properties`
 
 The path of it is most likely : `src/main/resources/application-dev.properties`
 
