@@ -119,7 +119,7 @@ following these steps:
 
 1. Select **Run** and choose the **Run Configurations** option.
 2. In the opened window on top middle, open **Arguments** tab.
-3. Add `--spring.profiles.active=dev` into **Program Arguments**.
+3. Add `-Dspring.profiles.active=dev` into **Program Arguments**.
 
 ### Loading Dependencies and Building the Project
 
