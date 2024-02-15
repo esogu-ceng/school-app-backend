@@ -17,13 +17,11 @@ Note: You can use an alternative SQL client tool instead of pgAdmin 4 if you pre
 
 ### Install Java Development Kit (JDK)
 
-Download [Java SE Development Kit 17.0.10](1) that suits your operating system.
-`[1]:https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html`
+Download [Java SE Development Kit 17.0.10](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) that suits your operating system.
 
 ### Install PostgreSQL Database Server:
 
-Download [PostgreSQL Database Server](2) version 16.2 or newer.
-`[2]:https://www.postgresql.org/download/windows/`
+Download [PostgreSQL Database Server](https://www.postgresql.org/download/windows/) version 16.2 or newer.
 
 During the installation you may get following error:
 
@@ -38,8 +36,7 @@ The installation should be complete without any error.
 
 ### Install pgAdmin 4 
 
-Download [pgAdmin 4](3). There are several latest releases of pgAdmin 4 versions listed there. You may download one you like.
-`[3]:https://www.pgadmin.org/download/pgadmin-4-windows/`
+Download [pgAdmin 4](https://www.pgadmin.org/download/pgadmin-4-windows/). There are several latest releases of pgAdmin 4 versions listed there. You may download one you like.
 
 ### Creating the PostgreSQL Database
 To create the PostgreSQL database:
