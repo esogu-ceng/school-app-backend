@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ticket" pageWidth="1460" pageHeight="1550" columnWidth="1460" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9091563d-2fa5-44be-8e5f-8ff0cb9c618c">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ticket" pageWidth="1150" pageHeight="1620" columnWidth="1150" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9091563d-2fa5-44be-8e5f-8ff0cb9c618c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -24,29 +24,118 @@
 	<background>
 		<band height="1463" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<image scaleImage="RetainShape">
-				<reportElement x="0" y="0" width="1448" height="1449" uuid="1fec5a85-d026-4f44-89eb-6d1d3b1d5a46">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<imageExpression><![CDATA["jasper-report-templates/ticket-2024.jpeg"]]></imageExpression>
-			</image>
+			<rectangle>
+				<reportElement x="20" y="10" width="1115" height="1441" backcolor="#FFF5F3" uuid="6abab4aa-fc20-476a-9f7e-322ff4ac6224"/>
+			</rectangle>
 			<componentElement>
-				<reportElement positionType="FixRelativeToBottom" stretchType="ContainerHeight" mode="Transparent" x="1030" y="1110" width="372" height="300" uuid="1eab4e26-bb28-44f4-afaf-e3d414c3d014">
+				<reportElement positionType="FixRelativeToBottom" stretchType="ContainerHeight" mode="Opaque" x="213" y="792" width="720" height="629" uuid="1eab4e26-bb28-44f4-afaf-e3d414c3d014">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="net.sf.jasperreports.style.radius" value="50"/>
 				</reportElement>
 				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<jr:codeExpression><![CDATA["http://app.bbomeskisehir.com:8080/tickets/public/"+$P{verification_code}+"/"+$P{seat_line}+"/"+$P{seat_no}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA["https://app.bbomeskisehir.com:8443/tickets/public/"+$P{verification_code}+"/"+$P{seat_line}+"/"+$P{seat_no}]]></jr:codeExpression>
 				</jr:QRCode>
 			</componentElement>
 			<textField>
-				<reportElement x="300" y="1210" width="331" height="45" uuid="be63eb2a-172a-4081-a04c-6c3ec85bb557"/>
-				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font size="46"/>
+				<reportElement x="730" y="82" width="378" height="109" uuid="be63eb2a-172a-4081-a04c-6c3ec85bb557"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Verdana" size="46" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{seat_line} + " - " + $P{seat_no}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="206" y="43" width="354" height="165" uuid="e7af8a9f-85a7-4ad3-8371-e7fa48aa1175">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["jasper-report-templates/icon.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="31" y="43" width="168" height="168" uuid="4d817a1f-93b6-46a2-856c-d0ae78a20cd3"/>
+				<imageExpression><![CDATA["jasper-report-templates/polifonik.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="730" y="40" width="378" height="41" uuid="2987943a-34fc-46ca-9575-348c6896e09f"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="30" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Koltuk]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="240" width="1078" height="120" uuid="8afc865b-fde8-431d-95da-b1aa58742366"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Verdana" size="46" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hall_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="540" y="420" width="567" height="120" uuid="88acd119-5b29-49f1-a194-eb71c3e8f522"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Verdana" size="46" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{hall_address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="422" width="317" height="120" uuid="ab519586-0fba-47d9-b3eb-83d87661fcb0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Verdana" size="46" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{act_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="422" width="170" height="120" uuid="2b00f735-9cc3-491d-97ae-35cf2943ebf1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Verdana" size="46" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{act_hour}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="372" width="317" height="41" uuid="fc4a6921-ebd5-49f3-a83a-d2ede9900b3b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Arial" size="30" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Tarih]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="370" width="170" height="41" uuid="cb138709-8b17-440a-a477-0da1809ea9c5">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Arial" size="30" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Kapı Açılış]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="370" width="568" height="41" uuid="05f39571-5ce2-4725-9075-2feac57f075f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Arial" size="30" pdfEncoding="Cp1254"/>
+				</textElement>
+				<text><![CDATA[Adres]]></text>
+			</staticText>
+			<rectangle radius="14">
+				<reportElement x="213" y="774" width="719" height="30" uuid="12758e89-dcc3-4373-b24a-802d0c2554fa"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle radius="14">
+				<reportElement x="213" y="1404" width="719" height="30" uuid="1d4448c2-fddb-41e5-829b-da1e2d8dc965"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<image>
+				<reportElement mode="Transparent" x="30" y="560" width="1090" height="310" uuid="0a0692df-bd89-4ebf-8395-c40e3f8c7ec5"/>
+				<imageExpression><![CDATA["jasper-report-templates/muzik.png"]]></imageExpression>
+			</image>
 		</band>
 	</background>
 	<summary>

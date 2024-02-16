@@ -17,6 +17,6 @@ public interface ActSessionHallSeatRepository extends JpaRepository<ActSessionHa
 	List<ActSessionHallSeat> findAllByActSessionInfoId(Long sessionId);
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	List<ActSessionHallSeat> findAllByStatusOrderByIdAsc(SeatStatus status, Pageable pageable);
+	List<ActSessionHallSeat> findAllByStatusAndIdGreaterThanOrderByIdAsc(SeatStatus status, Long id, Pageable pageable);
 
 }

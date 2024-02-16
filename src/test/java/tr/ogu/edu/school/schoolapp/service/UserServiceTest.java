@@ -38,8 +38,10 @@ class UserServiceTest {
 
 	@Test
 	void whenCreateUser_thenShouldReturnSavedUser() {
-		User userToSave = new User(null, "test@mail.com", "Testname", "Testsurname", "pass123", null, null, null);
-		User savedUser = new User(null, "test@mail.com", "Testname", "Testsurname", "hashedpass", null, null, null);
+		User userToSave = new User(null, "test@mail.com", "12345678911", "Testname", "Testsurname", "pass123", null,
+				null, null);
+		User savedUser = new User(null, "test@mail.com", "12345678911", "Testname", "Testsurname", "hashedpass", null,
+				null, null);
 		when(userRepository.save(any(User.class))).thenReturn(savedUser);
 		when(passwordEncoder.encode("pass123")).thenReturn("hashedpass");
 

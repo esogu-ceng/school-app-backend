@@ -3,6 +3,7 @@ package tr.ogu.edu.school.schoolapp.service;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class ActTicketService {
 			String ticketUrl = sendTicketEmailtoUser(actTicket, email);
 			log.info("Koltuk: {}-{} Kullanıcı: {} için bilet oluşturuldu",
 					actTicket.getActSessionHallSeat().getActSeat().getLine(),
-					actTicket.getActSessionHallSeat().getActSeat().getNo(), user.getMail());
+					actTicket.getActSessionHallSeat().getActSeat().getNo(), user.getTckn());
 			return ticketUrl;
 		} catch (Exception e) {
 			log.error("Bilet oluşturulamadı", e);
@@ -74,14 +75,16 @@ public class ActTicketService {
 	}
 
 	private String sendTicketEmailtoUser(ActTicket actTicket, String mail) {
-		String mailContent = settingRepository.getMailContent().getValue();
-		String ticketUrl = "http://app.bbomeskisehir.com:8080/tickets/public/" + actTicket.getVerificationCode() + "/"
+		String ticketUrl = "https://app.bbomeskisehir.com:8444/tickets/public/" + actTicket.getVerificationCode() + "/"
 				+ actTicket.getActSessionHallSeat().getActSeat().getLine() + "/"
 				+ actTicket.getActSessionHallSeat().getActSeat().getNo();
-		mailContent = mailContent.replaceAll("__TICKET_URL__", ticketUrl);
-		mailService.sendMailWithAttachment(actTicket.getUser().getMail(), "Biletiniz Burada :)", mailContent,
-				actTicket.getFilepath(), Arrays.asList(Pair.with("logo.png", "jasper-report-templates/icon.png"),
-						Pair.with("instagram.png", "jasper-report-templates/instagram.png")));
+		if (mail != null && !mail.isEmpty()) {
+			String mailContent = settingRepository.getMailContent().getValue();
+			mailContent = mailContent.replaceAll("__TICKET_URL__", ticketUrl);
+			mailService.sendMailWithAttachment(mail, "Biletiniz Burada :)", mailContent, actTicket.getFilepath(),
+					Arrays.asList(Pair.with("logo.png", "jasper-report-templates/icon.png"),
+							Pair.with("instagram.png", "jasper-report-templates/instagram.png")));
+		}
 		return ticketUrl;
 	}
 
@@ -94,6 +97,17 @@ public class ActTicketService {
 		parameters.put("session_date", actTicket.getSessionDate());
 		parameters.put("seat_line", actTicket.getActSessionHallSeat().getActSeat().getLine()); // required
 		parameters.put("seat_no", String.valueOf(actTicket.getActSessionHallSeat().getActSeat().getNo())); // required
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat simpleHourFormat = new SimpleDateFormat("HH:mm");
+		parameters.put("act_date",
+				simpleDateFormat.format(actTicket.getActSessionHallSeat().getActSessionInfo().getActivityDate())); // required
+		parameters.put("act_hour",
+				simpleHourFormat.format(actTicket.getActSessionHallSeat().getActSessionInfo().getActivityDate())); // required
+		parameters.put("hall_address",
+				String.valueOf(actTicket.getActSessionHallSeat().getActSessionInfo().getActHall().getName())); // required
+		parameters.put("hall_name",
+				String.valueOf(actTicket.getActSessionHallSeat().getActSessionInfo().getActivityName())); // required
 
 		return parameters;
 	}
@@ -113,14 +127,30 @@ public class ActTicketService {
 	}
 
 	@Transactional
-	public List<String> createTickets(int count, int activityId, String email) {
+	public List<String> createTickets(Long offset, int count, int activityId, String email) {
 		List<ActSessionHallSeat> availableSeats = actSessionHallSeatRepository
-				.findAllByStatusOrderByIdAsc(SeatStatus.AVAILABLE, PageRequest.of(0, count));
+				.findAllByStatusAndIdGreaterThanOrderByIdAsc(SeatStatus.AVAILABLE, offset, PageRequest.ofSize(count));
+		if (availableSeats.size() < count)
+			return null;
 		List<String> ticketUrls = new ArrayList<>();
-		for (ActSessionHallSeat actSessionHallSeat : availableSeats) {
-			actSessionHallSeat.setStatus(SeatStatus.BLOCKED);
+		ActSessionHallSeat actSessionHallSeat = availableSeats.get(0);
+		String line = actSessionHallSeat.getActSeat().getLine();
+		for (int i = 1; i < availableSeats.size(); i++) {
+			actSessionHallSeat = availableSeats.get(i);
+			String curLine = actSessionHallSeat.getActSeat().getLine();
+			if (!curLine.equals(line)) {
+				List<String> retList = createTickets(availableSeats.get(i - 1).getId(), count, activityId, email);
+				if (retList == null) {
+					break;
+				}
+				return retList;
+			}
+		}
+
+		for (ActSessionHallSeat actSessionHallSeat2 : availableSeats) {
+			actSessionHallSeat2.setStatus(SeatStatus.BLOCKED);
 			ActTicket actTicket = new ActTicket();
-			actTicket.setActSessionHallSeat(actSessionHallSeat);
+			actTicket.setActSessionHallSeat(actSessionHallSeat2);
 			String ticketUrl = createActTicket(actTicket, email);
 			ticketUrls.add(ticketUrl);
 		}

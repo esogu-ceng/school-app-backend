@@ -1,3 +1,7 @@
 [submodule "school-app-mobile"]
 	path = school-app-mobile
 	url = https://github.com/esogu-ceng/school-app-mobile.git
+[submodule "bilet"]
+	path = bilet
+	url = https://github.com/esogu-ceng/school-app-mobile.git
+	branch = feature_MS_biletAlmaEkranİEklendi

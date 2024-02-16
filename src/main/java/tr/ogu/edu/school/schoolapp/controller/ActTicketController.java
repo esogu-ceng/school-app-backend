@@ -23,8 +23,9 @@ public class ActTicketController {
 	private final ActTicketService actTicketService;
 
 	@PostMapping("/getSequentialTicket")
-	public ResponseEntity<List<String>> createTickets(@RequestParam int count, @RequestParam int activityId, @RequestParam String email) {
-		List<String> ticketUrls = actTicketService.createTickets(count, activityId, email);
+	public ResponseEntity<List<String>> createTickets(@RequestParam int count, @RequestParam int activityId,
+			@RequestParam(required = false) String email) {
+		List<String> ticketUrls = actTicketService.createTickets(0L, count, activityId, email);
 		return ResponseEntity.ok(ticketUrls);
 	}
 

@@ -42,6 +42,7 @@ public class SecurityConfig {
 		AuthenticationService.devUser.setName("Name");
 		AuthenticationService.devUser.setSurname("Surname");
 		AuthenticationService.devUser.setMail("Mail");
+		AuthenticationService.devUser.setTckn("Tckn");
 		AuthenticationService.devUser.setPassword("Password");
 		return http.build();
 	}
@@ -50,9 +51,8 @@ public class SecurityConfig {
 	@Profile("!dev")
 	public SecurityFilterChain securityFilterChainProduction(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
-				.authorizeHttpRequests(
-						(authz) -> authz.requestMatchers("/users/login")
-								.permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests((authz) -> authz.requestMatchers("/users/login", "/tickets/public/**")
+						.permitAll().anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin.loginProcessingUrl("/login").defaultSuccessUrl("/index.html"));
 //				.and()
 //				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

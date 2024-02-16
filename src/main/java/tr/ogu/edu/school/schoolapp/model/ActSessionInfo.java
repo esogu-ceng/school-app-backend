@@ -31,7 +31,7 @@ public class ActSessionInfo implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "activity_date")
 	private Date activityDate;
 
