@@ -25,19 +25,20 @@ public class PdfGeneratorService {
 
 	private FileUtil fileUtil;
 
-	public String generatePdf(String code, Map<String, Object> parameters, String templatePath) {
+	public String generatePdf(String fileName, Map<String, Object> parameters, String templatePath) {
 		File templateFile = new File(templatePath);
 		if (!templateFile.exists()) {
 			throw new ReportTemplateNotFoundException();
 		}
-		String documentFilePath = fileUtil.getFileFullPath("pdf");
+		String documentFilePath = fileUtil.getFileFullPath(fileName, "pdf");
 		try {
 			JasperReport jasperReport = JasperCompileManager.compileReport(templatePath);
 			log.info("Jasper Report şablonu derlendi.");
 			JasperPrint jprint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 			JasperExportManager.exportReportToPdfFile(jprint, documentFilePath);
-			log.info("{} kodlu doküman {} dosya yoluna kaydedildi.", code, documentFilePath);
-			return documentFilePath;
+			File f = new File(documentFilePath);
+			log.info("{} kodlu doküman {} dosya yoluna kaydedildi.", fileName, f.getAbsolutePath());
+			return f.getAbsolutePath();
 		} catch (JRException e) {
 			throw new FileNotCreatedException(e);
 		}

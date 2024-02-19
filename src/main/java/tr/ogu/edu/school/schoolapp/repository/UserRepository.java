@@ -8,4 +8,6 @@ import tr.ogu.edu.school.schoolapp.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	User findByMail(String mail);
+
+	User findByTckn(String tckn);
 }

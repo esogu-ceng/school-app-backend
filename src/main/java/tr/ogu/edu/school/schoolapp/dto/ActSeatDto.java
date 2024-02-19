@@ -19,6 +19,6 @@ public class ActSeatDto implements Serializable {
 
 	private ActHallDto actHall;
 
-	private List<ActSessionHallDto> actSessionHalls;
+	private List<ActSessionHallSeatDto> actSessionHalls;
 
 }

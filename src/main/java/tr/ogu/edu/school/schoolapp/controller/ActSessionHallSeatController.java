@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tr.ogu.edu.school.schoolapp.dto.ActSessionHallDto;
+import tr.ogu.edu.school.schoolapp.dto.ActSessionHallSeatDto;
 import tr.ogu.edu.school.schoolapp.mapper.ActSessionHallMapper;
-import tr.ogu.edu.school.schoolapp.model.ActSessionHall;
+import tr.ogu.edu.school.schoolapp.model.ActSessionHallSeat;
 import tr.ogu.edu.school.schoolapp.service.ActSessionHallService;
 
 @RestController
 @RequestMapping(value = "/session-seats")
 @RequiredArgsConstructor
-public class ActSessionHallController {
+public class ActSessionHallSeatController {
 
 	private final ActSessionHallService actSessionHallService;
 
 	@GetMapping("/{sessionId}")
-	public ResponseEntity<List<ActSessionHallDto>> getActivities(@PathVariable Long sessionId) {
-		List<ActSessionHall> activities = actSessionHallService.getSeatsByHallId(sessionId);
-		List<ActSessionHallDto> activityDtos = ActSessionHallMapper.INSTANCE.toDtoList(activities);
-		return ResponseEntity.ok(activityDtos);
+	public ResponseEntity<List<ActSessionHallSeatDto>> getSessionSeats(@PathVariable Long sessionId) {
+		List<ActSessionHallSeat> seats = actSessionHallService.getSeatsByHallId(sessionId);
+		List<ActSessionHallSeatDto> seatDtos = ActSessionHallMapper.INSTANCE.toDtoList(seats);
+		return ResponseEntity.ok(seatDtos);
 	}
 
 }
