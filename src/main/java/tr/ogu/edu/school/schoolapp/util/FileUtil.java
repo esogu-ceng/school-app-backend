@@ -17,7 +17,7 @@ public class FileUtil {
 
 	private static final int BYTE_COEFFICIENT = 1024;
 	private static final int REQUIRED_DISC_SPACE_MB = 100;
-	private static String filesRootPath = "./test/"; // FIXME veritabanından alınacak
+	private static String filesRootPath = "test/"; // FIXME veritabanından alınacak
 
 	public String getFileFullPath(MultipartFile file) {
 		checkPaths();
@@ -32,8 +32,14 @@ public class FileUtil {
 		checkPaths();
 		StringBuilder builder = new StringBuilder();
 		String fileUUID = UUID.randomUUID().toString();
-		String filePath = builder.append(filesRootPath).append(fileUUID).append(".")
-				.append(extention).toString();
+		String filePath = builder.append(filesRootPath).append(fileUUID).append(".").append(extention).toString();
+		return filePath;
+	}
+
+	public String getFileFullPath(String filename, String extention) {
+		checkPaths();
+		StringBuilder builder = new StringBuilder();
+		String filePath = builder.append(filesRootPath).append(filename).append(".").append(extention).toString();
 		return filePath;
 	}
 

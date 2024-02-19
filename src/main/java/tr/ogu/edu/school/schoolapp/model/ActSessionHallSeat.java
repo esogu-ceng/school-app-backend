@@ -1,11 +1,14 @@
 package tr.ogu.edu.school.schoolapp.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +19,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
+import tr.ogu.edu.school.schoolapp.enums.SeatStatus;
 
 /**
  * The persistent class for the act_session_hall database table.
@@ -23,8 +27,8 @@ import lombok.Data;
  */
 @Entity
 @Data
-@Table(name = "act_session_hall")
-public class ActSessionHall implements Serializable {
+@Table(name = "act_session_hall_seat")
+public class ActSessionHallSeat implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,7 +39,8 @@ public class ActSessionHall implements Serializable {
 	@Column(name = "blocked_time")
 	private Date blockedTime;
 
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private SeatStatus status;
 
 	// bi-directional many-to-one association to ActSeat
 	@ManyToOne
@@ -52,19 +57,22 @@ public class ActSessionHall implements Serializable {
 	private User user;
 
 	// bi-directional many-to-one association to ActTicket
-	@OneToMany(mappedBy = "actSessionHall")
+	@OneToMany(mappedBy = "actSessionHallSeat")
 	private List<ActTicket> actTickets;
 
 	public ActTicket addActTicket(ActTicket actTicket) {
+		if (getActTickets() == null) {
+			setActTickets(new ArrayList<>());
+		}
 		getActTickets().add(actTicket);
-		actTicket.setActSessionHall(this);
+		actTicket.setActSessionHallSeat(this);
 
 		return actTicket;
 	}
 
 	public ActTicket removeActTicket(ActTicket actTicket) {
 		getActTickets().remove(actTicket);
-		actTicket.setActSessionHall(null);
+		actTicket.setActSessionHallSeat(null);
 
 		return actTicket;
 	}
