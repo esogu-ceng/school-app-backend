@@ -86,6 +86,7 @@ If not, do following:
 1. Ensure that Lombok is installed in your IDE.
 2. If Lombok is not installed, follow these steps:
    - Close your IDE.
+   - Download the [lombok](https://projectlombok.org/download).
    - Add the Lombok library to your IDE.
    - Start your IDE.
 
