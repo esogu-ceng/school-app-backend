@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import tr.ogu.edu.school.schoolapp.model.ActTicket;
 import tr.ogu.edu.school.schoolapp.service.ActTicketService;
 
 @RestController
@@ -37,5 +38,10 @@ public class ActTicketController {
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + verificationCode + ".pdf").body(resource);
 	}
-
+    // Süresi dolmamış biletleri listeyen endpoint
+    @GetMapping("/valid")
+    public ResponseEntity<List<ActTicket>> getValidTickets() {
+        List<ActTicket> validTickets = actTicketService.getValidTickets();
+        return ResponseEntity.ok(validTickets);
+    }
 }
