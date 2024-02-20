@@ -45,7 +45,7 @@ public class ActTicketController {
         	@PathVariable String line, @PathVariable String no) {
 
     	// Biletin durumunu doğrular ve günceller
-    	String qrCode = verificationCode + "/" + line + "/" + no;
+    	String qrCode = verificationCode;
     	Map<String, Object> response = actTicketService.verifyTicket(qrCode);
     	return ResponseEntity.ok(response);
 	}
