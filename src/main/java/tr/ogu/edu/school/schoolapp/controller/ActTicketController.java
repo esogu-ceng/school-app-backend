@@ -42,7 +42,7 @@ public class ActTicketController {
 
 	// Biletin kullanım durumu
 	@PostMapping("/verify")
-    public ResponseEntity<Map<String, Object>> verifyTicket(@RequestBody String qrCode) {
+    	public ResponseEntity<Map<String, Object>> verifyTicket(@RequestBody String qrCode) {
 		// Biletin durumunu doğrular ve günceller
 		Map<String, Object> response = actTicketService.verifyTicket(qrCode);
 		return ResponseEntity.ok(response);
