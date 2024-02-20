@@ -162,4 +162,31 @@ public class ActTicketService {
 		}
 		return ticketUrls;
 	}
+
+	@Transactional
+	public Map<String, Object> verifyTicket(String qrCode) {
+    	ActTicket ticket = actTicketRepository.findByVerificationCode(qrCode);
+
+    	if (ticket == null) {
+        	throw new IllegalArgumentException("Geçersiz QR kodu.");
+    	}
+
+    	// Biletin mevcut durumu
+    	TicketStatus currentStatus = ticket.getStatus();
+
+		if (currentStatus == TicketStatus.USED) {
+			throw new IllegalStateException("Bilet zaten kullanılmış.");
+		}
+
+    	// Biletin durumunu 'Kullanıldı' olarak güncelleme
+    	ticket.setStatus(TicketStatus.USED);
+    	actTicketRepository.save(ticket);
+
+    	// Koltuk no ve durumun json olarak gitmesi
+    	Map<String, Object> response = new HashMap<>();
+    	response.put("seatNumber", ticket.getActSessionHallSeat().getActSeat().getNo());
+    	response.put("currentStatus", currentStatus);
+
+    	return response;
+	}
 }
