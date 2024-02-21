@@ -1,6 +1,7 @@
 package tr.ogu.edu.school.schoolapp.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -38,4 +39,13 @@ public class ActTicketController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=" + verificationCode + ".pdf").body(resource);
 	}
 
+	// Biletin kullanım durumu
+	@PostMapping("/public/{verificationCode}/{line}/{no}")
+	public ResponseEntity<Map<String, Object>> verifyTicket(@PathVariable String verificationCode,
+        	@PathVariable String line, @PathVariable String no) {
+
+    	// Biletin durumunu doğrular ve günceller
+    	Map<String, Object> response = actTicketService.verifyTicket(verificationCode);
+    	return ResponseEntity.ok(response);
+	}
 }

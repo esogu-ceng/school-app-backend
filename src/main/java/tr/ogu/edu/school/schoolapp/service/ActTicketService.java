@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.ogu.edu.school.schoolapp.enums.SeatStatus;
 import tr.ogu.edu.school.schoolapp.enums.TicketStatus;
+import tr.ogu.edu.school.schoolapp.exception.InvalidTicketException;
 import tr.ogu.edu.school.schoolapp.exception.TicketRequiredException;
 import tr.ogu.edu.school.schoolapp.model.ActSessionHallSeat;
 import tr.ogu.edu.school.schoolapp.model.ActTicket;
@@ -161,5 +162,29 @@ public class ActTicketService {
 			e.printStackTrace();
 		}
 		return ticketUrls;
+	}
+
+	@Transactional
+	public Map<String, Object> verifyTicket(String qrCode) {
+    	ActTicket ticket = actTicketRepository.findByVerificationCode(qrCode);
+
+		if (ticket == null) {
+			throw new InvalidTicketException();
+		}
+	
+		// Biletin mevcut durumu
+		TicketStatus currentStatus = ticket.getStatus();
+	
+		// Biletin durumunu 'Kullanıldı' olarak güncelleme
+		ticket.setStatus(TicketStatus.USED);
+		actTicketRepository.save(ticket);
+	
+		// Koltuk no ve durumun json olarak gitmesi
+		Map<String, Object> response = new HashMap<>();
+		response.put("seatNumber", ticket.getActSessionHallSeat().getActSeat().getNo());
+		response.put("seatLine", ticket.getActSessionHallSeat().getActSeat().getLine());
+		response.put("currentStatus", currentStatus);
+	
+		return response;
 	}
 }
