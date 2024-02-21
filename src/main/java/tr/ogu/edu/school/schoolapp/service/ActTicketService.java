@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -87,7 +88,7 @@ public class ActTicketService {
 		}
 		return ticketUrl;
 	}
-
+    
 	// Parametreleri birlikte almak için
 	private Map<String, Object> preparePdfParameters(ActTicket actTicket) {
 		Map<String, Object> parameters = new HashMap<>();
@@ -162,4 +163,10 @@ public class ActTicketService {
 		}
 		return ticketUrls;
 	}
+	
+	public List<ActTicket> getValidTickets() {
+        // Bugünkü tarihten sonraki biletleri al
+        Date today = new Date();
+        return actTicketRepository.findBySessionDateAfter(today);
+    }
 }
