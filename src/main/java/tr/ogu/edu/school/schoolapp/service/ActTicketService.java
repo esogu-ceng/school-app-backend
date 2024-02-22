@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tr.ogu.edu.school.schoolapp.enums.SeatStatus;
 import tr.ogu.edu.school.schoolapp.enums.TicketStatus;
-import tr.ogu.edu.school.schoolapp.exception.TicketInvalidException;
+import tr.ogu.edu.school.schoolapp.exception.InvalidTicketException;
 import tr.ogu.edu.school.schoolapp.exception.TicketRequiredException;
 import tr.ogu.edu.school.schoolapp.model.ActSessionHallSeat;
 import tr.ogu.edu.school.schoolapp.model.ActTicket;
@@ -169,7 +169,7 @@ public class ActTicketService {
 		ActTicket ticket = actTicketRepository.findByVerificationCode(qrCode);
 
 		if (ticket == null) {
-			throw new TicketInvalidException();
+			throw new InvalidTicketException();
 		}
 
 		// Biletin mevcut durumu
