@@ -78,14 +78,13 @@ public class MailService {
 	@Async
 	public void sendMail(String mailAddress, String mailSubject, String mailContent,
 			List<Pair<String, String>> images) {
-		sendMailWithAttachment(mailAddress, mailSubject, mailContent, null, images);
+		sendMultipleTickets(mailAddress, mailSubject, mailContent, images);
 	}
 
 	@Async
 	public void sendMailWithAttachment(String to, String subject, String body, String attachmentPath,
 			List<Pair<String, String>> images) {
-		Mail mail = new Mail(to, subject, body, attachmentPath, images);
-		mailQueue.push(mail);
+		sendMultipleTickets(to, subject, body, images);
 
 		if (isMailSenderRunning.compareAndSet(false, true)) {
 			log.info("E-posta gönderimi başlatıldı.");
@@ -245,4 +244,9 @@ public class MailService {
 		Transport.send(msg);
 	}
 
+	@Async
+	public void sendMultipleTickets(String to, String subject, String body, List<Pair<String, String>> ticketList) {
+    	Mail mail = new Mail(to, subject, body, null, ticketList);
+    	send(mail);
+	}
 }
