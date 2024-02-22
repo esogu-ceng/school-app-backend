@@ -38,12 +38,12 @@ public class UserControllerTest {
 
 	@Test
 	void whenLoginWithValidCredentials_thenShouldReturnToken() {
-		UserLoginDto userLoginDto = new UserLoginDto("test@mail.com", "pass123");
-		User authenticatedUser = new User(null, "test@mail.com", "12345678911", "Testname", "Testsurname", "pass123",
+		UserLoginDto userLoginDto = new UserLoginDto("11111111111", "pass123");
+		User authenticatedUser = new User(null, "11111111111", "12345678911", "Testname", "Testsurname", "pass123",
 				null, null, null);
 		String token = "exampleToken";
 
-		given(authenticationService.authenticateUser(userLoginDto.getMail(), userLoginDto.getPassword()))
+		given(authenticationService.authenticateUser(userLoginDto.getTckn(), userLoginDto.getPassword()))
 				.willReturn(authenticatedUser);
 		given(jwtUtil.generateToken(authenticatedUser)).willReturn(token);
 
@@ -58,15 +58,15 @@ public class UserControllerTest {
 
 	@Test
 	void whenLoginWithInvalidCredentials_thenShouldReturnUnauthorized() {
-		UserLoginDto userLoginDto = new UserLoginDto("user@mail.com", "wrongpassword");
+		UserLoginDto userLoginDto = new UserLoginDto("11111111111", "wrongpassword");
 
-		given(authenticationService.authenticateUser(userLoginDto.getMail(), userLoginDto.getPassword()))
+		given(authenticationService.authenticateUser(userLoginDto.getTckn(), userLoginDto.getPassword()))
 				.willReturn(null);
 
 		ResponseEntity<String> response = userController.login(userLoginDto);
 
 		assertThat(response.getStatusCodeValue()).isEqualTo(401);
 		assertThat(response.getBody()).isNull();
-		verify(authenticationService).authenticateUser(userLoginDto.getMail(), userLoginDto.getPassword());
+		verify(authenticationService).authenticateUser(userLoginDto.getTckn(), userLoginDto.getPassword());
 	}
 }
