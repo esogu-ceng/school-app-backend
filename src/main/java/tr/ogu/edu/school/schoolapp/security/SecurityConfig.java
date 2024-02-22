@@ -51,7 +51,7 @@ public class SecurityConfig {
 	@Profile("!dev")
 	public SecurityFilterChain securityFilterChainProduction(HttpSecurity http) throws Exception {
 		http.csrf().disable().cors().configurationSource(corsConfigurationSource()).and()
-				.authorizeHttpRequests((authz) -> authz.requestMatchers("/users/login", "/tickets/public/**")
+				.authorizeHttpRequests((authz) -> authz.requestMatchers("/users/login", "/users", "/tickets/public/**")
 						.permitAll().anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin.loginProcessingUrl("/login").defaultSuccessUrl("/index.html"));
 //				.and()

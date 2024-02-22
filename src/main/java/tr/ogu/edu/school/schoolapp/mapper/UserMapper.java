@@ -19,6 +19,7 @@ public class UserMapper {
 		userDto.setSurname(user.getSurname());
 		userDto.setMail(user.getMail());
 		userDto.setPassword(user.getPassword());
+		userDto.setTckn(user.getTckn());
 		Set<StudentDto> studentDtos = user.getStudents().stream().map(StudentMapper::toStudentDto)
 				.collect(Collectors.toSet());
 		userDto.setStudents(studentDtos);
@@ -32,6 +33,7 @@ public class UserMapper {
 		user.setSurname(userDto.getSurname());
 		user.setMail(userDto.getMail());
 		user.setPassword(userDto.getPassword());
+		user.setTckn(userDto.getTckn());
 		if (userDto.getStudents() != null && !userDto.getStudents().isEmpty()) {
 			user.setStudents(
 					userDto.getStudents().stream().map(StudentMapper::fromStudentDto).collect(Collectors.toList()));
