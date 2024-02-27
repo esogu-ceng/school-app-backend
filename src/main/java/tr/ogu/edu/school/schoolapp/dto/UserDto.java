@@ -15,5 +15,6 @@ public class UserDto {
 	private String surname;
 	private String mail;
 	private String password;
+	private String tckn;
 	private Set<StudentDto> students;
 }

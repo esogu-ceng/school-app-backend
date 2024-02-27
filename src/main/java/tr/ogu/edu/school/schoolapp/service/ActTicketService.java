@@ -166,25 +166,25 @@ public class ActTicketService {
 
 	@Transactional
 	public Map<String, Object> verifyTicket(String qrCode) {
-    	ActTicket ticket = actTicketRepository.findByVerificationCode(qrCode);
+		ActTicket ticket = actTicketRepository.findByVerificationCode(qrCode);
 
 		if (ticket == null) {
 			throw new InvalidTicketException();
 		}
-	
+
 		// Biletin mevcut durumu
 		TicketStatus currentStatus = ticket.getStatus();
-	
+
 		// Biletin durumunu 'Kullanıldı' olarak güncelleme
 		ticket.setStatus(TicketStatus.USED);
 		actTicketRepository.save(ticket);
-	
+
 		// Koltuk no ve durumun json olarak gitmesi
 		Map<String, Object> response = new HashMap<>();
 		response.put("seatNumber", ticket.getActSessionHallSeat().getActSeat().getNo());
 		response.put("seatLine", ticket.getActSessionHallSeat().getActSeat().getLine());
 		response.put("currentStatus", currentStatus);
-	
+
 		return response;
 	}
 }

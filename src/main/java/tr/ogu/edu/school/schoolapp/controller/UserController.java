@@ -61,7 +61,7 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody UserLoginDto userLoginDto) {
-		User authenticatedUser = authenticationService.authenticateUser(userLoginDto.getMail(),
+		User authenticatedUser = authenticationService.authenticateUser(userLoginDto.getTckn(),
 				userLoginDto.getPassword());
 		if (authenticatedUser != null) {
 //			String token = jwtUtil.generateToken(authenticatedUser);
