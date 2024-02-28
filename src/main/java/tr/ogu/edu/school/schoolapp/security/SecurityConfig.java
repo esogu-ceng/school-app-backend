@@ -34,7 +34,8 @@ public class SecurityConfig {
 	@Bean
 	@Profile("dev")
 	public SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
-		http.csrf().and().cors(cors -> cors.disable()).authorizeHttpRequests().anyRequest().permitAll();
+		http.csrf().disable();
+		http.cors(cors -> cors.disable()).authorizeHttpRequests().anyRequest().permitAll();
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("admin", null,
 				new ArrayList<>());
 		AuthenticationService.devUser = new User();
